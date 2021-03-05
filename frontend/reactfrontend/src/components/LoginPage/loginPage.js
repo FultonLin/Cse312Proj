@@ -1,5 +1,6 @@
 import React from 'react'
 import './loginPage.css'
+import {BrowserRouter as Router, Route, Switch, Link, Redirect, useLocation} from "react-router-dom";
 
 function LoginPage() {
   return (
@@ -11,10 +12,10 @@ function LoginPage() {
                     <h1>Login</h1>
                     <input className="Login-input" placeholder="Username"></input>
                     <input className="Login-input" placeholder="Password"></input>
-                    <button className="Login-button">Log in</button>
+                    <Link to="/lobby"><button className="Login-button">Log in</button></Link>
                 </div>
             </div>
-            <div className="Login-create-div"><p1>Create an account</p1></div>
+            <Link to="/create"><button className="Login-create-div"><p1>Create an account</p1></button></Link>
         </div>
     </div>
   );

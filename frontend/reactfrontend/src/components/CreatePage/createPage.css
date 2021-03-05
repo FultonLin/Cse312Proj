@@ -1,11 +1,11 @@
-.Login-Container{
+.Create-Container{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.Login-Bubble-Container{
+.Create-Bubble-Container{
     display: flex;
     justify-content: center;
     align-content: center;
@@ -13,7 +13,7 @@
     flex-direction: column;
 }
 
-.Login-Bubble{
+.Create-Bubble{
     background-color: white;
     width: 50vw;
     height: 50vmin;
@@ -21,30 +21,30 @@
     box-shadow: 5px 4px 2px 1px rgba(0, 0, 0, 0.3);
 }
 
-.Login-Text{
+.Create-Text{
     width: 30vw;
     margin-left: 4%;
     display: flex;
     flex-direction: column;
-    height: 45vmin;
-    justify-content: space-between;
+    height: 50vmin;
+    justify-content: space-evenly;
 }
 
-.Login-sub-header{
+.Create-sub-header{
     font-size: 18px;
 }
 
-.Login-input{
+.Create-input{
   width: 25vw;
   padding: 8px;
-  margin: 20px 0;
+  margin: 8px 0;
   border: none;
   border-bottom: 2px solid #F7C3C3;
   outline: none;
   font-size: 22px;
 }
 
-.Login-button{
+.Create-button{
   background-color: white;
   color: black;
   margin: 0 0;
@@ -58,16 +58,16 @@
   outline: none;
 }
 
-.Login-button:hover{
+.Create-button:hover{
     color: white;
     background-color: #F7C3C3; 
 }
 
-.Login-create-div{
+.Create-create-div{
     margin: 15px 0;
-    font-size: 14px;
+    font-size: 18px;
     color: #B06B6B;
-    opacity: .8;
+    opacity: 0;
     text-decoration: underline;
     border:none;
     background-color: transparent;

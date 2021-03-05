@@ -1,0 +1,33 @@
+.Home-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    height: 100%;
+}
+
+.Home-title{
+    margin-left: 2%;
+}
+
+.Home-content-container{
+    width: 95vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self:flex-end;
+    flex-direction: row;
+    border-radius: 20px;
+}
+
+.Calendar-container{
+    background-color: white;
+    width: 60vw;
+    height: 80vh;
+}
+
+.Social-container{
+    margin-right: 5%;
+    background-color: red;
+    width: 25vw;
+    height: 80vh;
+}

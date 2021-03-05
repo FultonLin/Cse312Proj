@@ -1,0 +1,24 @@
+.Lobby-calendar-bubble{
+    background-color: white;
+    width: 100%;
+    height: 8vh;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2%;
+    opacity: .7;
+    justify-content: space-between;
+}
+
+.Lobby-calendar-title{
+    font-size: 25px;
+    margin-left: 2%;
+}
+
+.Lobby-calendar-bubble:hover{
+    opacity: 1;
+}
+
+.Lobby-number{
+    margin-right: 2%;
+}
