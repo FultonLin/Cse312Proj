@@ -14,12 +14,16 @@
 .profile-picture-online{
     width: 3vw;
     opacity: .6;
+    margin-bottom: -3%;
 }
 
 .online-profile-box{
     display: flex;
     flex-direction: column;
-    margin: 3%;
+    margin-top: 2%;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-bottom: 1%;
     align-items: center;
     font-size: .75rem;
 }
@@ -30,12 +34,19 @@
     flex-direction: row;
     overflow: -moz-hidden-unscrollable;
     overflow-x: scroll;
+    overflow-y: hidden;
     border-bottom: 2px solid rgba(0, 0, 0, .4);
-    height: 11vh;
+    height: 10vh;
 }
 
 .number-online{
     margin-left: 7%;
+}
+
+.online-bar{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 ::-webkit-scrollbar {
