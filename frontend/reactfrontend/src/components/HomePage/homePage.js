@@ -2,6 +2,7 @@ import React from 'react'
 import './homePage.css'
 
 import Calendar from './Calendar/calendar'
+import Social from './Social/social'
 
 function HomePage() {
   return (
@@ -12,7 +13,7 @@ function HomePage() {
             <Calendar/>
           </div>
           <div className="Social-container">
-            <h1>Social and Dms go here</h1>
+            <Social/>
           </div>
         </div>
     </div>

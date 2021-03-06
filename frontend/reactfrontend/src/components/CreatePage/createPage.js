@@ -12,7 +12,7 @@ function CreatePage() {
                     <h1>Create an account</h1>
                     <input className="Create-input" placeholder="Username"></input>
                     <input className="Create-input" placeholder="Email"></input>
-                    <input className="Create-input" placeholder="Password"></input>
+                    <input className="Create-input" placeholder="Password" type="password"></input>
                     <Link to="/lobby"><button className="Create-button">Create!</button></Link>
                 </div>
             </div>

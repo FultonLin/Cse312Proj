@@ -5,7 +5,7 @@ import moment from 'moment'
 import createCalendar from './createCalendar'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowCircleLeft, faArrowCircleRight, faVideoSlash } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons'
 
 function Calendar() {
 
@@ -36,9 +36,9 @@ function Calendar() {
   return (
     <div className="calendar-box">
       <div className="month-selector">
-        <FontAwesomeIcon icon={faArrowCircleLeft} onClick={() =>prevMonth()}/>
+        <FontAwesomeIcon icon={faChevronLeft} onClick={() =>prevMonth()}/>
         {value.format("MMMM")}&nbsp;&nbsp;{value.format("YYYY")}
-        <FontAwesomeIcon icon={faArrowCircleRight} onClick={() =>nextMonth()}/>
+        <FontAwesomeIcon icon={faChevronRight} onClick={() =>nextMonth()}/>
       </div>
        {calendar.map((week) => (
          <div>

@@ -11,7 +11,7 @@ function LoginPage() {
                 <div className="Login-Text">
                     <h1>Login</h1>
                     <input className="Login-input" placeholder="Username"></input>
-                    <input className="Login-input" placeholder="Password"></input>
+                    <input className="Login-input" placeholder="Password" type="password"></input>
                     <Link to="/lobby"><button className="Login-button">Log in</button></Link>
                 </div>
             </div>
