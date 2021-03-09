@@ -1,7 +1,8 @@
 FROM python:3
-ENV PYTHONUNBUFFERED 1
-WORKDIR /app/api
-COPY requirements.txt ./
+RUN mkdir /backend
+WORKDIR /backend
+COPY requirements.txt /backend/requirements.txt
 RUN pip install -r requirements.txt
-COPY . ./
-EXPOSE 8000
+COPY . .
+ENTRYPOINT [ "flask" ]
+CMD [ "run", "--host=0.0.0.0" ]
