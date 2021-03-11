@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {BrowserRouter, Link, Switch, Route} from 'react-router-dom';
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import CreatePage from './Components/CreatePage/createPage';
+import LoginPage from './Components/LoginPage/loginPage';
+import HomePage from './Components/HomePage/homePage';
+import LobbyPage from './Components/LobbyPage/lobbyPage';
 
 function App() {
   const [currentTime, setCurrentTime] = useState(0);
@@ -16,24 +19,11 @@ function App() {
     <div className="App">
       <header className="App-header">
         <BrowserRouter>
-          <div>
-            <Link className="App-link" to="/">Home</Link>
-            
-            <Link className="App-link" to="/page2">Page2</Link>
-          </div>
-
           <Switch>
-            <Route exact path="/">
-              <img src={logo} className="App-logo" alt="logo" />
-              <p>
-                Edit <code>src/App.js</code> and save to reload.
-              </p>
-              <a className="App-link" href="https://reactjs.org" target = "_blank" rel="noopener noreferrer"> Learn React</a>
-              <p>The current time is {currentTime}</p>
-            </Route>
-            <Route path="/page2">
-              <p>This is page2!</p>
-            </Route>
+            <Route path="/create" exact component={CreatePage}/>
+            <Route path="/login" exact component={LoginPage}/>
+            <Route path="/home" exact component={HomePage}/>
+            <Route path="/lobby" exact component={LobbyPage}/>
           </Switch>
         </BrowserRouter>
       </header>
