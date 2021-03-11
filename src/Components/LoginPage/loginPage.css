@@ -1,0 +1,75 @@
+.Login-Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.Login-Bubble-Container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.Login-Bubble {
+  background-color: white;
+  width: 50vw;
+  height: 50vmin;
+  border-radius: 20px;
+  box-shadow: 5px 4px 2px 1px rgba(0, 0, 0, 0.3);
+}
+
+.Login-Text {
+  width: 30vw;
+  margin-left: 4%;
+  display: flex;
+  flex-direction: column;
+  height: 45vmin;
+  justify-content: space-between;
+}
+
+.Login-sub-header {
+  font-size: 18px;
+}
+
+.Login-input {
+  width: 25vw;
+  padding: 8px;
+  margin: 20px 0;
+  border: none;
+  border-bottom: 2px solid #f7c3c3;
+  outline: none;
+  font-size: 22px;
+}
+
+.Login-button {
+  background-color: white;
+  color: black;
+  margin: 0 0;
+  width: 40%;
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 20px;
+  border: 2px solid #f7c3c3;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
+  transition-duration: 0.2s;
+  outline: none;
+}
+
+.Login-button:hover {
+  color: white;
+  background-color: #f7c3c3;
+}
+
+.Login-create-div {
+  margin: 15px 0;
+  font-size: 14px;
+  color: #b06b6b;
+  opacity: 0.8;
+  text-decoration: underline;
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
