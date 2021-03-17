@@ -24,3 +24,19 @@ services:
       - ./frontend/public:/usr/src/app/public
     depends_on: 
       - app
+  db:
+    image: mysql:latest
+    volumes: 
+    - db_data:/var/lib/mysql
+    restart: always
+    environment: 
+      MYSQL_DATABASE: CSE312DB
+      MYSQL_USER: root
+      MYSQL_PASSWORD: THISpain123
+      MYSQL_ROOT_PASSWORD: eThah1ruW8ahgaigoom5quiesa9ahv2e
+    expose: 
+    - 3306
+    ports: 
+    - 3306:3306
+volumes: 
+  db_data:
