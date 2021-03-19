@@ -1,3 +1,4 @@
 Flask==1.0.2
 python-dotenv==0.11.0
-flask-cors
+Flask-Cors==3.0.10
+Flask-Bcrypt==0.7.1

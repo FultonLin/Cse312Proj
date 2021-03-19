@@ -7,13 +7,13 @@ import HomePage from './Components/HomePage/homePage';
 import LobbyPage from './Components/LobbyPage/lobbyPage';
 
 function App() {
-  const [currentTime, setCurrentTime] = useState(0);
+  // const [currentTime, setCurrentTime] = useState(0);
 
-  useEffect(() => {
-    fetch('/app/time').then(response => response.json()).then(data => {
-      setCurrentTime(data.time)
-    })
-  }, []);
+  // useEffect(() => {
+  //   fetch('/app/time').then(response => response.json()).then(data => {
+  //     setCurrentTime(data.time)
+  //   })
+  // }, []);
 
   return (
     <div className="App">
