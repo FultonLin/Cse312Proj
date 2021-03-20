@@ -24,8 +24,8 @@ function CreatePage() {
       },
       body: JSON.stringify(data)
     })
-      .then(response => response.json())
-      .then(response => console.log(response))
+      .then(response => console.log(response.text()))
+      .then(data => console.log(data))
   }
 
   const handleUsernameChange = (e) => {
@@ -47,9 +47,9 @@ function CreatePage() {
             <form className="Create-Bubble">
               <div className="Create-Text">
                 <h1>Create an account</h1>
-                <input type = "text" className="Create-input" placeholder="Username" onChange={handleUsernameChange} value={username}/>
-                <input type = "email" className="Create-input" placeholder="Email" onChange={handleEmailChange} value={email}/>
-                <input type = "password" className="Create-input" placeholder="Password" onChange={handlePasswordChange} value={password}/>
+                <input type = "text" onChange={handleUsernameChange} value={username} className="Create-input" placeholder="Username"/>
+                <input type = "email" onChange={handleEmailChange} value={email} className="Create-input" placeholder="Email"/>
+                <input type = "password" onChange={handlePasswordChange} value={password} className="Create-input" placeholder="Password"/>
                 <button className="Create-button" onClick={onSubmitClick} type="submit">Create</button>
               </div>
             </form>

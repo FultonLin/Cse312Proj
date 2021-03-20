@@ -24,7 +24,14 @@ def create():
     data = request.get_json(force=True)
     username = data.get('username', None)
     email = data.get('email', None)
-    hashpass = bcrypt.generate_password_hash(data.get('password', None))
-    print(hashpass)
-    print(data)
-    return app.send_static_file('index.html')
+    password = data.get('password', None)
+    if username == "" or email == "" or password == "":
+        return app.send_static_file('index.html')
+    else:
+        hashpass = bcrypt.generate_password_hash(password)  #Password is hashed
+        print(hashpass)                                     #The info needs to be stored onto database
+        print(data)
+        return app.send_static_file('index.html'),200
+
+# @app.route('/app/login',methods=['POST'])
+# def login():
