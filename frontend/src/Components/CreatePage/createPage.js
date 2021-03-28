@@ -24,7 +24,7 @@ function CreatePage() {
       },
       body: JSON.stringify(data)
     })
-      .then(response => console.log(response.text()))
+      .then(response => response)
       .then(data => console.log(data))
   }
 
