@@ -11,7 +11,7 @@ services:
       - ./app:/usr/src/app
     env_file: 
       - ./app/.flaskenv
-    external_links:
+    links:
       - db
   frontend:
     build: ./frontend
