@@ -2,9 +2,14 @@ import time
 from flask import Flask,request
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
+from pymongo import MongoClient
+from pymongo.errors import ServerSelectionTimeoutError
 
 app = Flask(__name__, static_folder='../app/build', static_url_path='/')
 bcrypt = Bcrypt()
+mongoClient = MongoClient("db", 27017) 
+database = mongoClient["database"]
+users = database["users"]
 
 @app.errorhandler(404)
 def not_found(e):
@@ -13,10 +18,6 @@ def not_found(e):
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
-
-# @app.route('/app/time')
-# def get_current_time():
-#     return {'time':time.time()}
 
 @app.route('/app/create', methods=['POST'])
 def create():
