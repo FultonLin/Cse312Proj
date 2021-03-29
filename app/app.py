@@ -1,5 +1,5 @@
 import time
-from flask import Flask,request
+from flask import Flask,request, jsonify
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
@@ -26,13 +26,29 @@ def create():
     username = data.get('username', None)
     email = data.get('email', None)
     password = data.get('password', None)
+
     if username == "" or email == "" or password == "":
-        return app.send_static_file('index.html')
+        msg = {"msg": "Credential left blank"}
+        return jsonify(msg),400
     else:
         hashpass = bcrypt.generate_password_hash(password)  #Password is hashed
         print(hashpass)                                     #The info needs to be stored onto database
         print(data)
-        return app.send_static_file('index.html'),200
+        print(username)
+        # Check if this username already exists in database
+        if(database.users.find({"username": username}).count() > 0):
+            msg = {"msg": "Username taken"}
+            return jsonify(msg),400
+        # Check if this email already exists in database
+        elif(database.users.find({"email": email}).count() > 0):
+            msg = {"msg": "Email taken"}
+            return jsonify(msg),400
+        # If account not taken, make account (No auth yet, needs to be implemented!!!)
+        else: 
+            dataVal = {"username": username, "email": email, "hashedPassword": hashpass}
+            x = users.insert_one(dataVal)
+            msg = {"msg": "Account created!"}
+            return jsonify(msg),200
 
 # @app.route('/app/login',methods=['POST'])
 # def login():
