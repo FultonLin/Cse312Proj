@@ -35,13 +35,9 @@ def create():
         print(hashpass)                                     #The info needs to be stored onto database
         print(data)
         print(username)
-        # Check if this username already exists in database
-        if(database.users.find({"username": username}).count() > 0):
-            msg = {"msg": "Username taken"}
-            return jsonify(msg),400
-        # Check if this email already exists in database
-        elif(database.users.find({"email": email}).count() > 0):
-            msg = {"msg": "Email taken"}
+        # Check if this username or email already exists in database
+        if(database.users.find({"username": username}).count() > 0 or database.users.find({"email": email}).count() > 0):
+            msg = {"msg": "Username/Email taken"}
             return jsonify(msg),400
         # If account not taken, make account (No auth yet, needs to be implemented!!!)
         else: 
