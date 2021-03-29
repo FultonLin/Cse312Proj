@@ -1,31 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import './loginPage.css'
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import loginCheck from './loginFunction';
 
 function LoginPage() {
   const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const onSubmitClick = (e)=>{
-    e.preventDefault()
-    console.log("Login Pressed")
-    let data = {
-      'username' : username,
-      'password' : password
-    }
-    console.log(data)
-    fetch('/app/login',{
-      method: 'post',
-      headers: {
-        'Content-type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => response.json())
-      .then(response => console.log(response)) //handle the response from flask and give access or a response "please retype password"
-  }
+  const [redirect, setRedirect] = useState(false);
+  const [incorrect, setIncorrect] = useState(false);
 
   const handleUsernameChange = (e) => {//set username when inputed
     setUsername(e.target.value)
@@ -35,8 +18,27 @@ function LoginPage() {
     setPassword(e.target.value)
   }
 
+   // If login valid go to lobby
+   const returnRedirect = () =>{
+    if(redirect){
+      return(
+        <Redirect to= "/lobby"/>
+      )
+    }
+  }
+
+  // If invalid credentials, alert user
+  const renderIncorrect = () =>{
+    if(incorrect){
+      return(
+        <p1 className="incorrect-credentials">Username or password incorrect.</p1>
+      )
+    }
+  }
+
   return (
     <div className="Login-Container">
+      {returnRedirect()}
         <div className="Login-Bubble-Container">
             <h1>Welcome to Calendarify.</h1>
             <div className="Login-Bubble">
@@ -44,7 +46,8 @@ function LoginPage() {
                     <h1>Login</h1>
                     <input type = "text" onChange={handleUsernameChange} value={username} className="Login-input" placeholder="Username"/>
                     <input type = "password" onChange={handlePasswordChange} value={password} className="Login-input" placeholder="Password" type="password"/>
-                    <Link to="/lobby"><button className="Login-button">Log in</button></Link>
+                    {renderIncorrect()}
+                    <div className="Login-button" onClick={() => loginCheck(username, password, setRedirect, setIncorrect, setUsername, setPassword)}>Log in</div>
                 </div>
             </div>
             <Link to="/create"><button className="Login-create-div"><p1>Create an account</p1></button></Link>

@@ -11,27 +11,6 @@ function CreatePage() {
   const [redirect, setRedirect] = useState(false);
   const [incorrect, setIncorrect] = useState(false);
 
-  const onSubmitClick = (e)=>{
-    e.preventDefault()
-    console.log("Account creation")
-    let data = {
-      'username' : username,
-      'email' : email,
-      'password' : password
-    }
-    console.log(data)
-    fetch('/app/create',{
-      method: 'post',
-      headers: {
-        'Content-type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => response.json())
-      .then(data => console.log(data))
-  }
-
   const handleUsernameChange = (e) => {
     setUsername(e.target.value)
   }
