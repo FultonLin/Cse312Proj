@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     justify-content: right;
-    height: 100%;
+    height: 100vh;
 }
 
 .Home-title{
@@ -10,11 +10,9 @@
 }
 
 .Home-content-container{
-    width: 95vw;
+    width: 100vw;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    align-self:flex-end;
+    justify-content: space-evenly;
     flex-direction: row;
     border-radius: 20px;
 }
@@ -22,11 +20,9 @@
 .Calendar-container{
     width: 60vw;
     height: 80vh;
-    margin-left: 5%;
 }
 
 .Social-container{
-    margin-right: 5%;
     background-color: rgba(255, 255, 255, .8);
     width: 25vw;
     height: 80vh;
