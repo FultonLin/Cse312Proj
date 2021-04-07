@@ -46,7 +46,9 @@ def create():
         else: 
             dataVal = {"username": username, "email": email, "hashedPassword": hashpass}
             x = users.insert_one(dataVal)
-            msg = {"msg": "Account created!"} #Auth should send token instead of this msg
+            increment_login_number()
+            encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(login_number)}, secret, algorithm="HS256")
+            msg = {"token": encoded} #Auth should send token instead of this msg
             return jsonify(msg),200
 
 #resets login_number to 0 if it reaches max value
