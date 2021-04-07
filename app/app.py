@@ -4,12 +4,17 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
+import jwt
+
+
 
 app = Flask(__name__, static_folder='../app/build', static_url_path='/')
 bcrypt = Bcrypt()
 mongoClient = MongoClient("db", 27017) 
 database = mongoClient["database"]
 users = database["users"]
+secret = "supersecretstring"
+login_number = 0
 
 @app.errorhandler(404)
 def not_found(e):
@@ -37,12 +42,23 @@ def create():
         if(database.users.find({"username": username}).count() > 0 or database.users.find({"email": email}).count() > 0):
             msg = {"msg": "Username/Email taken"}
             return jsonify(msg),400
-        # If account not taken, make account (No auth yet, needs to be implemented!!!)
+        # If account not taken, make account and generate authentication token
         else: 
             dataVal = {"username": username, "email": email, "hashedPassword": hashpass}
             x = users.insert_one(dataVal)
-            msg = {"msg": "Account created!"} #Auth should send token instead of this msg
+            increment_login_number()
+            encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(login_number)}, secret, algorithm="HS256")
+            msg = {"token": encoded} 
             return jsonify(msg),200
+
+#resets login_number to 0 if it reaches max value
+def increment_login_number():
+    global login_number
+    if(login_number == 2147483647):
+        login_number = 0
+    else:
+        login_number = login_number + 1
+
 
 @app.route('/app/login',methods=['POST'])
 def login():
@@ -50,12 +66,14 @@ def login():
     username = data.get('username', None)
     password = data.get('password', None)
     hashpass = bcrypt.generate_password_hash(password)
-    # If username and password are found, good login (no auth yet!!!)
+    # If username and password are found, good login, generates authentication token
     if(database.users.find({"username": username}).count() > 0 ):
             user = database.users.find({"username": username})
             userPW = user[0].get('hashedPassword')
             if(bcrypt.check_password_hash(userPW, password)):
-                msg = {"msg": "Good login"} #Auth should send token instead of this msg
+                increment_login_number()
+                encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(login_number)}, secret, algorithm="HS256")
+                msg = {"token": encoded} 
                 return jsonify(msg),200
             else:
                 msg = {"msg": "Invalid login"}
