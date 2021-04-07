@@ -14,6 +14,7 @@ mongoClient = MongoClient("db", 27017)
 database = mongoClient["database"]
 users = database["users"]
 secret = "supersecretstring"
+login_number = 0
 
 @app.errorhandler(404)
 def not_found(e):
@@ -48,6 +49,15 @@ def create():
             msg = {"msg": "Account created!"} #Auth should send token instead of this msg
             return jsonify(msg),200
 
+#resets login_number to 0 if it reaches max value
+def increment_login_number():
+    global login_number
+    if(login_number == 2147483647):
+        login_number = 0
+    else:
+        login_number = login_number + 1
+
+
 @app.route('/app/login',methods=['POST'])
 def login():
     data = request.get_json(force=True)
@@ -59,8 +69,9 @@ def login():
             user = database.users.find({"username": username})
             userPW = user[0].get('hashedPassword')
             if(bcrypt.check_password_hash(userPW, password)):
-                encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username}, secret, algorithm="HS256")
-                msg = {"msg": "Good login"} #Auth should send token instead of this msg
+                increment_login_number()
+                encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(login_number)}, secret, algorithm="HS256")
+                msg = {"token": encoded} 
                 return jsonify(msg),200
             else:
                 msg = {"msg": "Invalid login"}
