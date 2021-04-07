@@ -42,13 +42,13 @@ def create():
         if(database.users.find({"username": username}).count() > 0 or database.users.find({"email": email}).count() > 0):
             msg = {"msg": "Username/Email taken"}
             return jsonify(msg),400
-        # If account not taken, make account (No auth yet, needs to be implemented!!!)
+        # If account not taken, make account and generate authentication token
         else: 
             dataVal = {"username": username, "email": email, "hashedPassword": hashpass}
             x = users.insert_one(dataVal)
             increment_login_number()
             encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(login_number)}, secret, algorithm="HS256")
-            msg = {"token": encoded} #Auth should send token instead of this msg
+            msg = {"token": encoded} 
             return jsonify(msg),200
 
 #resets login_number to 0 if it reaches max value
@@ -66,7 +66,7 @@ def login():
     username = data.get('username', None)
     password = data.get('password', None)
     hashpass = bcrypt.generate_password_hash(password)
-    # If username and password are found, good login (no auth yet!!!)
+    # If username and password are found, good login, generates authentication token
     if(database.users.find({"username": username}).count() > 0 ):
             user = database.users.find({"username": username})
             userPW = user[0].get('hashedPassword')
