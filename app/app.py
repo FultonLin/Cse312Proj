@@ -4,12 +4,16 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
+import jwt
+
+
 
 app = Flask(__name__, static_folder='../app/build', static_url_path='/')
 bcrypt = Bcrypt()
 mongoClient = MongoClient("db", 27017) 
 database = mongoClient["database"]
 users = database["users"]
+secret = "supersecretstring"
 
 @app.errorhandler(404)
 def not_found(e):
@@ -55,6 +59,7 @@ def login():
             user = database.users.find({"username": username})
             userPW = user[0].get('hashedPassword')
             if(bcrypt.check_password_hash(userPW, password)):
+                encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username}, secret, algorithm="HS256")
                 msg = {"msg": "Good login"} #Auth should send token instead of this msg
                 return jsonify(msg),200
             else:
