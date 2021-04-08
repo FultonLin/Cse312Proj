@@ -15,11 +15,14 @@ export default function createCheck(username,email,password, setRedirect, setInc
         },
         body: JSON.stringify(data)
       })
-        .then(response => response.status)
+        .then(response => response.text())
         .then(data => {
+            var res = JSON.parse(data)
             console.log(data)
-            if(data === 200){
-                setRedirect(true)
+            if(res.token !== undefined){
+              console.log(res.token)
+              sessionStorage.setItem("token", res.token)
+              setRedirect(true)
             }
             else{
                 setIncorrect(true)

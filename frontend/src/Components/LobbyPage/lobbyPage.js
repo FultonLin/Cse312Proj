@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './lobbyPage.css'
 
 
@@ -6,10 +6,22 @@ import CalendarBubble from './lobbyComponents/CalendarBubble'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser} from '@fortawesome/free-solid-svg-icons'
+import { Redirect } from 'react-router'
 
 function LoginPage() {
+
+  const renderRedirect = () =>{       //If no token, sends user back to login
+    var token = sessionStorage.getItem("token")
+    if(token === null){
+      return(
+        <Redirect to ="/login"/>
+      )
+    }
+  }
+
   return (
     <div className="Lobby-container">
+      {renderRedirect()}
         <div className="Lobby-headers">
           <h1 className="Lobby-title">Calendarify.</h1>
           <div className="Nav-buttons">

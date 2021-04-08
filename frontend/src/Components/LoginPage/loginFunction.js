@@ -14,13 +14,15 @@ export default function loginCheck(username, password, setRedirect, setIncorrect
         },
         body: JSON.stringify(data)
       })
-        .then(response => response.status)
+        .then(response => response.text())
         .then(data => {
-            console.log(data)
-            if(data === 200){
-                setRedirect(true)
+            var res = JSON.parse(data)
+            if(res.token !== undefined){
+              sessionStorage.setItem("token", res.token)
+              setRedirect(true)
             }
             else{
+                console.log(res)
                 setIncorrect(true)
                 setPassword("")
                 setUsername("")
