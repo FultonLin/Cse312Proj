@@ -12,6 +12,15 @@ function HomePage() {
 
   const [goHome, setGoHome] = useState(false);
 
+  const renderRedirect = () =>{       //If no token, sends user back to login
+    var token = sessionStorage.getItem("token")
+    if(token === null){
+      return(
+        <Redirect to ="/login"/>
+      )
+    }
+  }
+
   const redirectHome = () =>{
     if(goHome){
       return(
@@ -22,6 +31,7 @@ function HomePage() {
 
   return (
     <div className="Home-container">
+      {renderRedirect()}
       {redirectHome()}
         <div className="Lobby-headers">
           <h1 className="Lobby-title">Calendarify.</h1>
