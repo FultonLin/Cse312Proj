@@ -24,6 +24,7 @@ function App() {
             <Route path="/login" exact component={LoginPage}/>
             <Route path="/home" exact component={HomePage}/>
             <Route path="/lobby" exact component={LobbyPage}/>
+            <Route path="/" exact component={HomePage}/>
           </Switch>
         </BrowserRouter>
       </header>
