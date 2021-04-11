@@ -5,6 +5,7 @@ import CreatePage from './Components/CreatePage/createPage';
 import LoginPage from './Components/LoginPage/loginPage';
 import HomePage from './Components/HomePage/homePage';
 import LobbyPage from './Components/LobbyPage/lobbyPage';
+import CalendarCreatePage from './Components/CalendarCreatePage/calendarCreatePage';
 
 function App() {
   // const [currentTime, setCurrentTime] = useState(0);
@@ -25,6 +26,7 @@ function App() {
             <Route path="/home" exact component={HomePage}/>
             <Route path="/lobby" exact component={LobbyPage}/>
             <Route path="/" exact component={HomePage}/>
+            <Route path="/calendarCreate" exact component={CalendarCreatePage}/>
           </Switch>
         </BrowserRouter>
       </header>
