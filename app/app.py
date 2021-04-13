@@ -36,7 +36,7 @@ def create():
 
     if username == "" or email == "" or password == "":
         msg = {"msg": "Credential left blank"}
-        return jsonify(msg), 400
+        return jsonify(msg), 200
     else:
         hashpass = bcrypt.generate_password_hash(
             password)  # Password is hashed
@@ -44,7 +44,7 @@ def create():
         # Check if this username or email already exists in database
         if(database.users.find({"username": username}).count() > 0 or database.users.find({"email": email}).count() > 0):
             msg = {"msg": "Username/Email taken"}
-            return jsonify(msg), 400
+            return jsonify(msg), 200
         # If account not taken, make account and generate authentication token
         else:
             increment_login_number()
@@ -85,10 +85,10 @@ def login():
             return jsonify(msg), 200
         else:
             msg = {"msg": "Invalid login"}
-            return jsonify(msg), 400
+            return jsonify(msg), 200
     else:
         msg = {"msg": "Invalid login"}
-        return jsonify(msg), 400
+        return jsonify(msg), 200
 
 
 @app.route('/app/calendarcreate', methods=['POST'])
@@ -98,11 +98,11 @@ def calendarcreate():
     token = data.get('token', None)
     if name == "" or calendars.find({'name':name}).count() > 0:
         msg = {"msg": "incorrect"}
-        return jsonify(msg), 400
+        return jsonify(msg), 200
     calendars.insert_one({'membercount' : 1,'name':name})
     users.update({"token": token},{ "$push": {"Joined Calendars":name}},upsert=True)
     msg = {"msg": name}
-    return jsonify(msg), 400
+    return jsonify(msg), 200
 
 @app.route('/app/calendarAdd', methods=['POST'])
 def calendaradd():
@@ -111,4 +111,10 @@ def calendaradd():
 #This will query logged in user to find calendars they are in and send the names and # of poeple in them to lobby
 @app.route('/app/lobby', methods=['POST'])
 def lobby():
-    return NotImplemented
+    data = request.get_json(force=True)
+    token = data.get('token',None)
+    account = users.find({'token':token})
+    joinedCalendars = account[0].get('Joined Calendars')
+    print(joinedCalendars,flush=True)
+    msg = {"msg": joinedCalendars}
+    return jsonify(msg), 200

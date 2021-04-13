@@ -1,12 +1,29 @@
 import React, {useEffect} from 'react'
 import './lobbyPage.css'
-import { Link, Redirect } from "react-router-dom";
 import CalendarBubble from './lobbyComponents/CalendarBubble'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser} from '@fortawesome/free-solid-svg-icons'
-import loginCheck from './loginFunction';
+import { Link, Redirect } from "react-router-dom";
 
-function LoginPage() {
+function LobbyPage() {
+  
+  var token = sessionStorage.getItem("token")
+  let data = {
+      'token' : token,
+    }
+  fetch('/app/lobby',{
+      method: 'post',
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.text())
+      .then(data => {
+          var res = JSON.parse(data)
+          console.log(data)
+      })
 
   const renderRedirect = () =>{       //If no token, sends user back to login
     var token = sessionStorage.getItem("token")
@@ -18,6 +35,7 @@ function LoginPage() {
   }
 
   return (
+
     <div className="Lobby-container">
       {renderRedirect()}
         <div className="Lobby-headers">
@@ -42,4 +60,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default LobbyPage;
