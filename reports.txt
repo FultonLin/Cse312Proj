@@ -1,0 +1,75 @@
+Open-Source reports for libraries:
+
+---Frontend---
+
+React: 
+
+a.) What does this technology accomplish?
+React is very useful for our team because of it's easy to use state management. You can make
+a state variable and whenever it changes, it automatically changes in the UI. Our webapp 
+relies heavily on different states so choosing React to handle these different states is very useful.
+b.) How does this technology accomplish what it does?
+React uses what is known as a virtual DOM. A DOM is the rendered HTML that the user sees. With a virtual DOM, 
+the DOM is essentialy Javascript and is able to reactively change. When something is changed in the virtulal DOM
+and compare it to the actual DOM and update it to a snapshot of the virtual DOM with miminal changes. If you look
+at the index.html file created by React, it has a singular div with the id of root. That's because everything
+React-based in the webapp resides in this singular div. Otherwise, index.html is more or less a basic html file.
+The react then works based on this within, the index.js file which takes that root div and applies the react DOM
+to it with the reactDom.render method.
+c.) What license(s) or terms of service apply to this technology?
+React is created by Facebook and is licensed under MIT.
+
+MomentJS:
+
+a.) What does this technology accomplish?
+Moment is used in our case to get the current date and the date system entirely. Dates can be found out manually 
+but allowing MomentJS to figure it out for us is much, much easier. Parsing data is as simple as a function call.
+b.) How does this technology accomplish what it does?
+MomentJS takes the local date and makes it into it's own object to modify its output with functions. In the moment.js
+file in the moment folder, the HTML5 input of the current date is inputted and moment creates its own object based on 
+that. You then can call different methods on that date object. For example, if you want to see if a date is before another,
+you would call the isBefore() function which is located in the compare.js file. This function parsed the date object inti
+milliseconds and compares the two dates with a simple boolean if the milliseconds is larger or smaller than the other.
+c.) What license(s) or terms of service apply to this technology?
+MomentJS was created by the JS foundation and is licensed under MIT. It is open source and the user is allowed to modify it
+free of charge.
+
+---Backend---
+
+Flask:
+
+a.) What does this technology accomplish?
+//
+b.) How does this technology accomplish what it does?
+//
+c.) What license(s) or terms of service apply to this technology?
+Flask's license is licensed under BSD. You are permitted to modify it as long
+as the Flask disclaimer is present and you do not promote the original author's 
+of Flask for the derivatves you make of Flask.
+
+Bcrypt:
+
+a.) What does this technology accomplish?
+Bcrypt is used to hash the passwords for our backend. Using this, passwords are never stored in plain text which would
+pose a huge security risk. When logging in, the passwords are compares to the hashed password as well, to ensure satisfactory 
+security.
+b.) How does this technology accomplish what it does?
+The salt and password are inputted to first set up the proccess of hashing the password. It runs a proccess where the password
+is stretched, called key stretching. Then, a value is selected and encrypted into the extended password 64 times. The output of this
+process is the hashed password. In this process, Bcrpy also uses 'salt' which gives you different hashes for the same input which is 
+adds a whole new layer of security. You may ask how verifying passwords work if salting gives you a different hash? The salt is 
+actually stored in the hash itself. So when comparing if a password matches a hash, it uses the salt given in the original hash to apply
+to the password you are trying to verify.
+c.) What license(s) or terms of service apply to this technology?
+Bcrypt is licensed under an Apache license. This grants people general commerical use of the product along with their own modification.
+
+JWT: 
+a.) What does this technology accomplish?
+This library allows us to create unique tokens to send to our frontend and database to verify a login session. It is much easier
+than manually creating our unique token that can't be guessed by anyone.
+b.) How does this technology accomplish what it does?
+When creating a JWT an alogorithm is needed. In our case, HS256. This means the token will be signed with SHA256. First the token is encoded
+with the base 64 encoding system. This is not secure enough of course and then our paremeter alogorithm, HS256, is used to apply and encode the 
+token even further.
+c.) What license(s) or terms of service apply to this technology?
+JWT is licesned under the MIT license and allows for standard commerical use and modification.
