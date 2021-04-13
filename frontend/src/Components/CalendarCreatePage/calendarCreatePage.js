@@ -25,7 +25,7 @@ function CalendarCreatePage() {
   const renderIncorrect = () =>{
     if(incorrect){
       return(
-        <p1 className="incorrect-credentials">Field is empty</p1>
+        <p1 className="incorrect-credentials">Name field is Empty or Used</p1>
       )
     }
   }
@@ -43,7 +43,7 @@ function CalendarCreatePage() {
                 <div className="Create-button" onClick={() => createCalendar(name, setRedirect, setIncorrect, setName)} type="submit">Create</div>
               </div>
             </form>
-            <Link to="/login"><button className="Login-create-div"><p1>Login</p1></button></Link>
+            <button className="Create-button"><Link to="/lobby">Back to Lobby</Link></button>
         </div>
     </div>
   );

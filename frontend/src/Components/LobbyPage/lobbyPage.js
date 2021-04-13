@@ -1,12 +1,9 @@
 import React, {useEffect} from 'react'
 import './lobbyPage.css'
-
-
+import { Link, Redirect } from "react-router-dom";
 import CalendarBubble from './lobbyComponents/CalendarBubble'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser} from '@fortawesome/free-solid-svg-icons'
-import { Redirect } from 'react-router'
 
 function LoginPage() {
 
@@ -32,7 +29,7 @@ function LoginPage() {
             <h1>Your calendars</h1>
             <div className="Lobby-join-create-container">
                 <button className="Lobby-join-button">Join someone's calendar</button>
-                <button className="Lobby-create-button">Create calendar</button>
+                <button className="Lobby-create-button"><Link to="/calendarCreate">Create Calendar</Link></button>
             </div>
             <div className="Lobby-calendar-bubble-container">
                 <CalendarBubble title="CSE312 Group" number="4"/>

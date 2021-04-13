@@ -17,7 +17,7 @@ export default function createCalendar(name, setRedirect, setIncorrect, setName)
         .then(data => {
             var res = JSON.parse(data)
             console.log(data)
-            if(res.msg !== "Calendar name left blank"){
+            if(res.msg !== "incorrect"){
               setRedirect(true)
             }
             else{

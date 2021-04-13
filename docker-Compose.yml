@@ -1,6 +1,6 @@
-version: '3'
+version: "3"
 
-services: 
+services:
   app:
     build: ./app
     expose:
@@ -9,7 +9,7 @@ services:
       - 5000:5000
     volumes:
       - ./app:/usr/src/app
-    env_file: 
+    env_file:
       - ./app/.flaskenv
     links:
       - db
@@ -17,20 +17,20 @@ services:
     build: ./frontend
     expose:
       - 3000
-    environment: 
+    environment:
       - CI=true
-    ports: 
+    ports:
       - 3000:3000
-    volumes: 
+    volumes:
       - ./frontend/src:/usr/src/app/src
       - ./frontend/public:/usr/src/app/public
-    depends_on: 
+    depends_on:
       - app
   db:
     image: mongo:latest
     ports:
-      - 27017:27017
+      - 27018:27017
     volumes:
       - mongodb_data_container:/data/db
-volumes: 
+volumes:
   mongodb_data_container:

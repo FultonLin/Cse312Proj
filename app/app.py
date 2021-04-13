@@ -47,12 +47,12 @@ def create():
             return jsonify(msg), 400
         # If account not taken, make account and generate authentication token
         else:
-            dataVal = {"username": username,
-                       "email": email, "hashedPassword": hashpass}
-            x = users.insert_one(dataVal)
             increment_login_number()
             encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(
                 login_number)}, secret, algorithm="HS256")
+            dataVal = {"username": username,
+                       "email": email, "hashedPassword": hashpass, "token":encoded}
+            x = users.insert_one(dataVal)
             msg = {"token": encoded}
             return jsonify(msg), 200
 
@@ -79,6 +79,8 @@ def login():
             increment_login_number()
             encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(
                 login_number)}, secret, algorithm="HS256")
+            #update collection users with username as username and set token to new encoded
+            users.update_one({'username': username}, {'$set': {'token':encoded}})
             msg = {"token": encoded}
             return jsonify(msg), 200
         else:
@@ -94,9 +96,19 @@ def calendarcreate():
     data = request.get_json(force=True)
     name = data.get('name', None)
     token = data.get('token', None)
-    if name == "":
-        msg = {"msg": "Calendar name left blank"}
+    if name == "" or calendars.find({'name':name}).count() > 0:
+        msg = {"msg": "incorrect"}
         return jsonify(msg), 400
-    
+    calendars.insert_one({'membercount' : 1,'name':name})
+    users.update({"token": token},{ "$set": {"Joined Calendars":name}},upsert=True)
     msg = {"msg": name}
     return jsonify(msg), 400
+
+@app.route('/app/calendarAdd', methods=['POST'])
+def calendaradd():
+    return NotImplemented
+
+#This will query logged in user to find calendars they are in and send the names and # of poeple in them to lobby
+@app.route('/app/lobby', methods=['POST'])
+def lobby():
+    return NotImplemented
