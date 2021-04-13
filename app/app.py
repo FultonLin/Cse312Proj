@@ -100,7 +100,7 @@ def calendarcreate():
         msg = {"msg": "incorrect"}
         return jsonify(msg), 400
     calendars.insert_one({'membercount' : 1,'name':name})
-    users.update({"token": token},{ "$set": {"Joined Calendars":name}},upsert=True)
+    users.update({"token": token},{ "$push": {"Joined Calendars":name}},upsert=True)
     msg = {"msg": name}
     return jsonify(msg), 400
 
