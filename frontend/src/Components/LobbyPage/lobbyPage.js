@@ -4,6 +4,7 @@ import { Link, Redirect } from "react-router-dom";
 import CalendarBubble from './lobbyComponents/CalendarBubble'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser} from '@fortawesome/free-solid-svg-icons'
+import loginCheck from './loginFunction';
 
 function LoginPage() {
 
