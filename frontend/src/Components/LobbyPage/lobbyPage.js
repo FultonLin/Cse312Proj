@@ -6,7 +6,7 @@ import { faUser} from '@fortawesome/free-solid-svg-icons'
 import { Link, Redirect } from "react-router-dom";
 
 function LobbyPage() {
-  
+
   var token = sessionStorage.getItem("token")
   let data = {
       'token' : token,
@@ -23,6 +23,10 @@ function LobbyPage() {
       .then(data => {
           var res = JSON.parse(data)
           console.log(data)
+          if(res.msg != "zero"){
+            renderJoinedsBubble(true)
+          }
+
       })
 
   const renderRedirect = () =>{       //If no token, sends user back to login
@@ -32,6 +36,10 @@ function LobbyPage() {
         <Redirect to ="/login"/>
       )
     }
+  }
+
+  const renderJoinedsBubble = () =>{
+    //return <CalendarBubble title= {res[0].name} number={res[0].membercount}/>
   }
 
   return (
@@ -51,6 +59,7 @@ function LobbyPage() {
                 <button className="Lobby-create-button"><Link to="/calendarCreate">Create Calendar</Link></button>
             </div>
             <div className="Lobby-calendar-bubble-container">
+                {renderJoinedsBubble()}
                 <CalendarBubble title="CSE312 Group" number="4"/>
                 <CalendarBubble title="Family schedule" number="4"/>
                 <CalendarBubble title="Personal" number="1"/>

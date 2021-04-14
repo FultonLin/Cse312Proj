@@ -51,12 +51,14 @@ def create():
             encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(
                 login_number)}, secret, algorithm="HS256")
             dataVal = {"username": username,
-                       "email": email, "hashedPassword": hashpass, "token":encoded}
+                       "email": email, "hashedPassword": hashpass, "token": encoded}
             x = users.insert_one(dataVal)
             msg = {"token": encoded}
             return jsonify(msg), 200
 
 # resets login_number to 0 if it reaches max value
+
+
 def increment_login_number():
     global login_number
     if(login_number == 2147483647):
@@ -79,8 +81,9 @@ def login():
             increment_login_number()
             encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(
                 login_number)}, secret, algorithm="HS256")
-            #update collection users with username as username and set token to new encoded
-            users.update_one({'username': username}, {'$set': {'token':encoded}})
+            # update collection users with username as username and set token to new encoded
+            users.update_one({'username': username}, {
+                             '$set': {'token': encoded}})
             msg = {"token": encoded}
             return jsonify(msg), 200
         else:
@@ -96,25 +99,35 @@ def calendarcreate():
     data = request.get_json(force=True)
     name = data.get('name', None)
     token = data.get('token', None)
-    if name == "" or calendars.find({'name':name}).count() > 0:
+    if name == "" or calendars.find({'name': name}).count() > 0:
         msg = {"msg": "incorrect"}
         return jsonify(msg), 200
-    calendars.insert_one({'membercount' : 1,'name':name})
-    users.update({"token": token},{ "$push": {"Joined Calendars":name}},upsert=True)
+    calendars.insert_one({'membercount': 1, 'name': name})
+    users.update({"token": token}, {
+                 "$push": {"Joined Calendars": name}}, upsert=True)
     msg = {"msg": name}
     return jsonify(msg), 200
+
 
 @app.route('/app/calendarAdd', methods=['POST'])
 def calendaradd():
     return NotImplemented
 
-#This will query logged in user to find calendars they are in and send the names and # of poeple in them to lobby
+# This will query logged in user to find calendars they are in and send the names and # of poeple in them to lobby
+
+
 @app.route('/app/lobby', methods=['POST'])
 def lobby():
     data = request.get_json(force=True)
-    token = data.get('token',None)
-    account = users.find({'token':token})
+    token = data.get('token', None)
+    account = users.find({'token': token})
     joinedCalendars = account[0].get('Joined Calendars')
-    print(joinedCalendars,flush=True)
-    msg = {"msg": joinedCalendars}
+    currentJoined = []
+    if len(joinedCalendars) > 0:
+        for x in joinedCalendars:
+            currentJoined.append(calendars.find_one(
+                {'name': x}, {'_id': False, 'name': True, 'membercount': True}))
+        print(currentJoined, flush=True)
+        return jsonify(currentJoined), 200
+    msg = {"msg": "zero"}
     return jsonify(msg), 200
