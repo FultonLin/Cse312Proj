@@ -49,24 +49,10 @@ function LobbyPage() {
         var calendarnumber = joined[i].membercount;
         placeholder.push(<CalendarBubble title={nameplaceholder} number={calendarnumber}/>);
       }
-      console.log(placeholder)
       return (placeholder)
     }
   }
-
-    // // If invalid credentials, alert user
-    // const renderIncorrect = () =>{
-    //   if(incorrect){
-    //     var placeholder = [];
-    //     placeholder.push(<p1 key="unique1" className="incorrect-credentials">Username or password incorrect.</p1>);
-    //     placeholder.push(<p1 key="unique2" className="incorrect-credentials">Username or password incorrect.</p1>);
-    //     return(
-    //       placeholder
-    //     )
-    //   }
-    // }
   
-
   return (
 
     <div className="Lobby-container">
@@ -85,9 +71,6 @@ function LobbyPage() {
             </div>
             <div className="Lobby-calendar-bubble-container">
                 {renderJoinedsBubble()}
-                <CalendarBubble title="CSE312 Group" number="4"/>
-                <CalendarBubble title="Family schedule" number="4"/>
-                <CalendarBubble title="Personal" number="1"/>
             </div>
         </div>
     </div>
