@@ -127,7 +127,6 @@ def lobby():
         for x in joinedCalendars:
             currentJoined.append(calendars.find_one(
                 {'name': x}, {'_id': False, 'name': True, 'membercount': True}))
-        print(currentJoined, flush=True)
         return jsonify(currentJoined), 200
     msg = {"msg": "zero"}
     return jsonify(msg), 200
