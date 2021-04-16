@@ -1,50 +1,50 @@
-.Create-Container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+.Create-Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.Create-Bubble-Container{
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    flex-direction: column;
+.Create-Bubble-Container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.Create-Bubble{
-    background-color: white;
-    width: 50vw;
-    height: 50vmin;
-    border-radius: 20px;
-    box-shadow: 5px 4px 2px 1px rgba(0, 0, 0, 0.3);
+.Create-Bubble {
+  background-color: white;
+  width: 50vw;
+  height: 50vmin;
+  border-radius: 20px;
+  box-shadow: 5px 4px 2px 1px rgba(0, 0, 0, 0.3);
 }
 
-.Create-Text{
-    width: 30vw;
-    margin-left: 4%;
-    display: flex;
-    flex-direction: column;
-    height: 50vmin;
-    justify-content: space-evenly;
+.Create-Text {
+  width: 30vw;
+  margin-left: 4%;
+  display: flex;
+  flex-direction: column;
+  height: 50vmin;
+  justify-content: space-evenly;
 }
 
-.Create-sub-header{
-    font-size: 18px;
+.Create-sub-header {
+  font-size: 18px;
 }
 
-.Create-input{
+.Create-input {
   width: 25vw;
   padding: 8px;
   margin: 8px 0;
   border: none;
-  border-bottom: 2px solid #F7C3C3;
+  border-bottom: 2px solid #f7c3c3;
   outline: none;
   font-size: 22px;
 }
 
-.Create-button{
+.Create-button {
   background-color: white;
   color: black;
   margin: 0 0;
@@ -52,29 +52,29 @@
   padding: 15px;
   border-radius: 5px;
   font-size: 20px;
-  border: 2px solid #F7C3C3; 
+  border: 2px solid #f7c3c3;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
-  transition-duration: .2s;
+  transition-duration: 0.2s;
   outline: none;
   text-align: center;
 }
 
-.Create-button:hover{
-    color: white;
-    background-color: #F7C3C3; 
+.Create-button:hover {
+  color: white;
+  background-color: #f7c3c3;
 }
 
-.Create-create-div{
-    margin: 15px 0;
-    font-size: 18px;
-    color: #B06B6B;
-    opacity: 0;
-    text-decoration: underline;
-    border:none;
-    background-color: transparent;
-    outline: none;
+.Create-create-div {
+  margin: 15px 0;
+  font-size: 18px;
+  color: #b06b6b;
+  opacity: 0;
+  text-decoration: underline;
+  border: none;
+  background-color: transparent;
+  outline: none;
 }
 
-.incorrect-credentials{
-    color: red;
+.incorrect-credentials {
+  color: red;
 }

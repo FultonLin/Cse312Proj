@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect, useState } from 'react'
 import './lobbyPage.css'
 import CalendarBubble from './lobbyComponents/CalendarBubble'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,6 +7,8 @@ import { Link, Redirect } from "react-router-dom";
 
 function LobbyPage() {
 
+  const [joined, setJoined] = useState(false);
+  const [renderjoined, setrenderjoined] = useState(false);
   var token = sessionStorage.getItem("token")
   let data = {
       'token' : token,
@@ -22,9 +24,10 @@ function LobbyPage() {
       .then(response => response.text())
       .then(data => {
           var res = JSON.parse(data)
-          console.log(data)
-          if(res.msg != "zero"){
-            renderJoinedsBubble(true)
+          if(res.msg !== "zero"){
+            console.log(res)
+            setJoined(res)
+            setrenderjoined(true)
           }
 
       })
@@ -39,8 +42,30 @@ function LobbyPage() {
   }
 
   const renderJoinedsBubble = () =>{
-    //return <CalendarBubble title= {res[0].name} number={res[0].membercount}/>
+    if(joined !== undefined && renderjoined === true){
+      var placeholder = [];
+      for(var i = 0; i < joined.length;i++){
+        var nameplaceholder = joined[i].name;
+        var calendarnumber = joined[i].membercount;
+        placeholder.push(<CalendarBubble title={nameplaceholder} number={calendarnumber}/>);
+      }
+      console.log(placeholder)
+      return (placeholder)
+    }
   }
+
+    // // If invalid credentials, alert user
+    // const renderIncorrect = () =>{
+    //   if(incorrect){
+    //     var placeholder = [];
+    //     placeholder.push(<p1 key="unique1" className="incorrect-credentials">Username or password incorrect.</p1>);
+    //     placeholder.push(<p1 key="unique2" className="incorrect-credentials">Username or password incorrect.</p1>);
+    //     return(
+    //       placeholder
+    //     )
+    //   }
+    // }
+  
 
   return (
 
