@@ -39,9 +39,12 @@ free of charge.
 Flask:
 
 a.) What does this technology accomplish?
-//
+FLask is a WSGI micro-framework that allows us to use tools that we need if we need them.
+We use it to connect frontend to backend and it handles connections that is sent from react.
+It handles connections between database and the front end.
 b.) How does this technology accomplish what it does?
-//
+Flask is at its core just a skeleton where it does not depend on anything. It makes no decisions on how the website
+should run. This allows us a lot of freedom in what we use.
 c.) What license(s) or terms of service apply to this technology?
 Flask's license is licensed under BSD. You are permitted to modify it as long
 as the Flask disclaimer is present and you do not promote the original author's 
