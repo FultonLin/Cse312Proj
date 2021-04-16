@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
+import json
 import jwt
 
 
@@ -44,15 +45,16 @@ def create():
             return jsonify(msg),400
         # If account not taken, make account and generate authentication token
         else: 
-            dataVal = {"username": username, "email": email, "hashedPassword": hashpass}
-            x = users.insert_one(dataVal)
             increment_login_number()
-            encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(login_number)}, secret, algorithm="HS256")
+            encoded = jwt.encode({'sub': username, 'login':login_number}, secret, algorithm="HS256", headers={'alg':"HS256", 'typ':"JWT"})
+            dataVal = {"username": username, "email": email, "hashedPassword": hashpass, "token": encoded}
+            x = users.insert_one(dataVal)
             msg = {"token": encoded} 
             return jsonify(msg),200
 
 #resets login_number to 0 if it reaches max value
 def increment_login_number():
+    
     global login_number
     if(login_number == 2147483647):
         login_number = 0
@@ -72,7 +74,8 @@ def login():
             userPW = user[0].get('hashedPassword')
             if(bcrypt.check_password_hash(userPW, password)):
                 increment_login_number()
-                encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(login_number)}, secret, algorithm="HS256")
+                encoded = jwt.encode({'sub': username, 'login':login_number}, secret, algorithm="HS256", headers={'alg':"HS256", 'typ':"JWT"})
+                users.update_one({'username': username}, {'$set': {'token': encoded}})
                 msg = {"token": encoded} 
                 return jsonify(msg),200
             else:
