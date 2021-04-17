@@ -54,7 +54,7 @@ def create():
             token = genToken()
             hashedToken = bcrypt.generate_password_hash(token) #Hashed token, can't store plain token in db
             dataVal = {"username": username,
-                       "email": email, "hashedPassword": hashpass, "token": hashedToken}
+                       "email": email, "hashedPassword": hashpass, "token": hashedToken, "darkmode": False}
             x = users.insert_one(dataVal)
             msg = {"token": token}
             return jsonify(msg), 200
@@ -157,5 +157,48 @@ def lobby():
                     currentJoined.append(calendars.find_one(
                         {'name': x}, {'_id': False, 'name': True, 'membercount': True}))
                 return jsonify(currentJoined), 200
+    msg = {"msg": "zero"}
+    return jsonify(msg), 200
+
+# This returns users profile information
+@app.route('/app/profile', methods=['POST'])
+def profile():
+    data = request.get_json(force=True)
+    token = data.get('token', None)
+    account = ''
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            account = user
+    if(account != ''):
+        username = account.get('username')
+        email = account.get('email')
+        darkmode = account.get('darkmode')
+        joinedCalendars = account.get('Joined Calendars')
+        return jsonify(username, email, darkmode), 200
+    msg = {"msg": "zero"}
+    return jsonify(msg), 200
+
+# This changes dark mode settings
+@app.route('/app/darkmode', methods=['POST'])
+def darkmode():
+    data = request.get_json(force=True)
+    token = data.get('token', None)
+    darkmode = data.get('darkmode', None)
+    account = ''
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            account = user
+    if(account != ''):
+        username = account.get('username')
+        print(username, flush=True)
+        print(darkmode, flush=True)
+        users.update_one({'username': username}, {'$set': {'darkmode': darkmode}})
+        msg = {"msg": "zero"}
+        return jsonify(msg), 200
+    print("User not found", flush=True)
     msg = {"msg": "zero"}
     return jsonify(msg), 200
