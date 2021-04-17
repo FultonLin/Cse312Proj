@@ -5,6 +5,7 @@ from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
 import jwt
+import random
 
 app = Flask(__name__, static_folder='../app/build', static_url_path='/')
 bcrypt = Bcrypt()
@@ -47,13 +48,15 @@ def create():
             return jsonify(msg), 200
         # If account not taken, make account and generate authentication token
         else:
-            increment_login_number()
-            encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(
-                login_number)}, secret, algorithm="HS256")
+            # increment_login_number()
+            # encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(
+            #     login_number)}, secret, algorithm="HS256")
+            token = genToken()
+            hashedToken = bcrypt.generate_password_hash(token) #Hashed token, can't store plain token in db
             dataVal = {"username": username,
-                       "email": email, "hashedPassword": hashpass, "token": encoded}
+                       "email": email, "hashedPassword": hashpass, "token": hashedToken}
             x = users.insert_one(dataVal)
-            msg = {"token": encoded}
+            msg = {"token": token}
             return jsonify(msg), 200
 
 # resets login_number to 0 if it reaches max value
@@ -65,6 +68,17 @@ def increment_login_number():
         login_number = 0
     else:
         login_number = login_number + 1
+
+# This generates a token, no need for JWT
+def genToken():
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    token = ''
+    i = 0
+    while(i < 32):
+        num = round(random.random() * (len(alphabet) - 1))
+        token = token + alphabet[num]
+        i = i + 1
+    return token
 
 
 @app.route('/app/login', methods=['POST'])
@@ -78,13 +92,16 @@ def login():
         user = database.users.find({"username": username})
         userPW = user[0].get('hashedPassword')
         if(bcrypt.check_password_hash(userPW, password)):
-            increment_login_number()
-            encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(
-                login_number)}, secret, algorithm="HS256")
+            # increment_login_number()
+            # encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(
+            #     login_number)}, secret, algorithm="HS256")
+
+            token = genToken()
+            hashedToken = bcrypt.generate_password_hash(token) #Hashed token, can't store plain token in db
             # update collection users with username as username and set token to new encoded
             users.update_one({'username': username}, {
-                             '$set': {'token': encoded}})
-            msg = {"token": encoded}
+                             '$set': {'token': hashedToken}})
+            msg = {"token": token}
             return jsonify(msg), 200
         else:
             msg = {"msg": "Invalid login"}
@@ -103,10 +120,15 @@ def calendarcreate():
         msg = {"msg": "incorrect"}
         return jsonify(msg), 200
     calendars.insert_one({'membercount': 1, 'name': name})
-    users.update({"token": token}, {
-                 "$push": {"Joined Calendars": name}}, upsert=True)
-    msg = {"msg": name}
-    return jsonify(msg), 200
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            users.update({"token": hashedToken}, {
+                        "$push": {"Joined Calendars": name}}, upsert=True)
+            msg = {"msg": name}
+            return jsonify(msg), 200
+    return 400
 
 
 @app.route('/app/calendarAdd', methods=['POST'])
@@ -120,13 +142,20 @@ def calendaradd():
 def lobby():
     data = request.get_json(force=True)
     token = data.get('token', None)
-    account = users.find({'token': token})
-    joinedCalendars = account[0].get('Joined Calendars')
-    currentJoined = []
-    if len(joinedCalendars) > 0:
-        for x in joinedCalendars:
-            currentJoined.append(calendars.find_one(
-                {'name': x}, {'_id': False, 'name': True, 'membercount': True}))
-        return jsonify(currentJoined), 200
+    account = ''
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            account = user
+    if(account != ''):
+        joinedCalendars = account.get('Joined Calendars')
+        currentJoined = []
+        if(joinedCalendars != None):
+            if len(joinedCalendars) > 0:
+                for x in joinedCalendars:
+                    currentJoined.append(calendars.find_one(
+                        {'name': x}, {'_id': False, 'name': True, 'membercount': True}))
+                return jsonify(currentJoined), 200
     msg = {"msg": "zero"}
     return jsonify(msg), 200
