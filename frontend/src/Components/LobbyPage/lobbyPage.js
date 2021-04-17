@@ -9,13 +9,16 @@ function LobbyPage() {
 
   const [joined, setJoined] = useState(false);
   const [renderjoined, setrenderjoined] = useState(false);
-  var token = sessionStorage.getItem("token")
-  let data = {
-      'token' : token,
-    }
+  const [goProfile, setGoProfile] = useState(false)
+  const [goCreate, setGoCreate] = useState(false)
+  
 
     useEffect(() => {
       // Calls this request only once per render
+      var token = sessionStorage.getItem("token")
+      let data = {
+          'token' : token,
+        }
       fetch('/app/lobby',{
         method: 'post',
         headers: {
@@ -56,22 +59,42 @@ function LobbyPage() {
       return (placeholder)
     }
   }
+
+  //Goes to profile page
+  const redirectProfile = () =>{
+    if(goProfile){
+      return(
+        <Redirect to="/profile"/>
+      )
+    }
+  }
+
+  //Goes to create calendar page
+  const redirectCreate = () =>{
+    if(goCreate){
+      return(
+        <Redirect to="/calendarCreate"/>
+      )
+    }
+  }
   
   return (
 
     <div className="Lobby-container">
       {renderRedirect()}
+      {redirectProfile()}
+      {redirectCreate()}
         <div className="Lobby-headers">
           <h1 className="Lobby-title">Calendarify.</h1>
           <div className="Nav-buttons">
-            <div className="Lobby-profile"><FontAwesomeIcon icon={faUser} size="2x"/></div>
+            <div className="Lobby-profile" onClick={() => setGoProfile(true)}><FontAwesomeIcon icon={faUser} size="2x"/></div>
           </div>
         </div>
         <div className="Lobby-center-container">
             <h1>Your calendars</h1>
             <div className="Lobby-join-create-container">
                 <button className="Lobby-join-button">Join someone's calendar</button>
-                <button className="Lobby-create-button"><Link to="/calendarCreate">Create Calendar</Link></button>
+                <button className="Lobby-create-button" onClick={() => setGoCreate(true)}>Create Calendar</button>
             </div>
             <div className="Lobby-calendar-bubble-container">
                 {renderJoinedsBubble()}

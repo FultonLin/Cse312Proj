@@ -8,6 +8,7 @@ function CalendarCreatePage() {
 
   const [redirect, setRedirect] = useState(false);
   const [incorrect, setIncorrect] = useState(false);
+  const [goLobby, setGoLobby] = useState(false);
 
   const handleNameChange = (e) => {
     setName(e.target.value)
@@ -30,9 +31,18 @@ function CalendarCreatePage() {
     }
   }
 
+  const redirectLobby = () =>{
+    if(goLobby){
+      return(
+        <Redirect to="/lobby"/>
+      )
+    }
+  }
+
   return (
     <div className="Create-Container">
       {returnRedirect()}
+      {redirectLobby()}
         <div className="Create-Bubble-Container">
             <h1>Create a Calendar.</h1>
             <form className="Create-Bubble">
@@ -43,7 +53,7 @@ function CalendarCreatePage() {
                 <div className="Create-button" onClick={() => createCalendar(name, setRedirect, setIncorrect, setName)} type="submit">Create</div>
               </div>
             </form>
-            <button className="Create-button"><Link to="/lobby">Back to Lobby</Link></button>
+            <button className="Create-button" onClick={() => setGoLobby(true)}>Back to Lobby</button>
         </div>
     </div>
   );

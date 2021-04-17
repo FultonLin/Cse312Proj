@@ -1,0 +1,21 @@
+.profilePage-subtitle{
+    font-size: 26px;
+}
+
+.darkmode-container{
+    display: flex;
+    align-items: center;
+}
+
+.darkmode-checkbox{
+    margin-left: 2%;
+    width: 40px;
+    height: 40px;
+}
+
+.profile-header{
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+}

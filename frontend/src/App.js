@@ -6,15 +6,9 @@ import LoginPage from './Components/LoginPage/loginPage';
 import HomePage from './Components/HomePage/homePage';
 import LobbyPage from './Components/LobbyPage/lobbyPage';
 import CalendarCreatePage from './Components/CalendarCreatePage/calendarCreatePage';
+import ProfilePage from './Components/ProfilePage/profilePage';
 
 function App() {
-  // const [currentTime, setCurrentTime] = useState(0);
-
-  // useEffect(() => {
-  //   fetch('/app/time').then(response => response.json()).then(data => {
-  //     setCurrentTime(data.time)
-  //   })
-  // }, []);
 
   return (
     <div className="App">
@@ -27,6 +21,7 @@ function App() {
             <Route path="/lobby" exact component={LobbyPage}/>
             <Route path="/" exact component={HomePage}/>
             <Route path="/calendarCreate" exact component={CalendarCreatePage}/>
+            <Route path="/profile" exact component={ProfilePage}/>
           </Switch>
         </BrowserRouter>
       </header>
