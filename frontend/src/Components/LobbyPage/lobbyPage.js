@@ -13,24 +13,28 @@ function LobbyPage() {
   let data = {
       'token' : token,
     }
-  fetch('/app/lobby',{
-      method: 'post',
-      headers: {
-        'Content-type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => response.text())
-      .then(data => {
-          var res = JSON.parse(data)
-          if(res.msg !== "zero"){
-            console.log(res)
-            setJoined(res)
-            setrenderjoined(true)
-          }
 
+    useEffect(() => {
+      // Calls this request only once per render
+      fetch('/app/lobby',{
+        method: 'post',
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
       })
+        .then(response => response.text())
+        .then(data => {
+            var res = JSON.parse(data)
+            if(res.msg !== "zero"){
+              console.log(res)
+              setJoined(res)
+              setrenderjoined(true)
+            }
+  
+        })
+    }, []);
 
   const renderRedirect = () =>{       //If no token, sends user back to login
     var token = sessionStorage.getItem("token")
