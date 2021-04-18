@@ -11,6 +11,9 @@ function LobbyPage() {
   const [renderjoined, setrenderjoined] = useState(false);
   const [goProfile, setGoProfile] = useState(false)
   const [goCreate, setGoCreate] = useState(false)
+
+  //Dark mode css
+  var dark = sessionStorage.getItem('darkmode')
   
 
     useEffect(() => {
@@ -80,18 +83,18 @@ function LobbyPage() {
   
   return (
 
-    <div className="Lobby-container">
+    <div className={dark === 'true' ? 'dark-Lobby-container' : "Lobby-container"}>
       {renderRedirect()}
       {redirectProfile()}
       {redirectCreate()}
         <div className="Lobby-headers">
-          <h1 className="Lobby-title">Calendarify.</h1>
+          <h1 className={dark === 'true' ? "dark-Lobby-title": "Lobby-title"}>Calendarify.</h1>
           <div className="Nav-buttons">
             <div className="Lobby-profile" onClick={() => setGoProfile(true)}><FontAwesomeIcon icon={faUser} size="2x"/></div>
           </div>
         </div>
         <div className="Lobby-center-container">
-            <h1>Your calendars</h1>
+            <h1 className={dark === 'true' ? 'dark-calendar-title' : ''}>Your calendars</h1>
             <div className="Lobby-join-create-container">
                 <button className="Lobby-join-button">Join someone's calendar</button>
                 <button className="Lobby-create-button" onClick={() => setGoCreate(true)}>Create Calendar</button>

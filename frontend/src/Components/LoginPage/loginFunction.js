@@ -18,7 +18,9 @@ export default function loginCheck(username, password, setRedirect, setIncorrect
         .then(data => {
             var res = JSON.parse(data)
             if(res.token !== undefined){
+              console.log(res)
               sessionStorage.setItem("token", res.token)
+              sessionStorage.setItem("darkmode", res.darkmode)
               setRedirect(true)
             }
             else{

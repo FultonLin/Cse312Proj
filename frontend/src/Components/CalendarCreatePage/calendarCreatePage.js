@@ -10,6 +10,9 @@ function CalendarCreatePage() {
   const [incorrect, setIncorrect] = useState(false);
   const [goLobby, setGoLobby] = useState(false);
 
+  //Dark mode css
+  var dark = sessionStorage.getItem('darkmode')
+
   const handleNameChange = (e) => {
     setName(e.target.value)
   }
@@ -40,20 +43,20 @@ function CalendarCreatePage() {
   }
 
   return (
-    <div className="Create-Container">
+    <div className={dark === 'true' ? 'dark-Create-Container': "Create-Container"}>
       {returnRedirect()}
       {redirectLobby()}
         <div className="Create-Bubble-Container">
-            <h1>Create a Calendar.</h1>
-            <form className="Create-Bubble">
+            <h1 className={dark === 'true' ? 'dark-create-title': ''}>Create a Calendar.</h1>
+            <form className={dark === 'true' ? 'dark-Create-Bubble' : "Create-Bubble"}>
               <div className="Create-Text">
-                <h1>Name of Calendar</h1>
-                <input type = "text" onChange={handleNameChange} value={name} className="Create-input" placeholder="Name"/>
+                <h1 className={dark === 'true' ? 'dark-create-title': ''}>Name of Calendar</h1>
+                <input type = "text" onChange={handleNameChange} value={name} className={dark === 'true' ? 'dark-Create-input' : "Create-input"} placeholder="Name"/>
                 {renderIncorrect()}
-                <div className="Create-button" onClick={() => createCalendar(name, setRedirect, setIncorrect, setName)} type="submit">Create</div>
+                <div className={dark === 'true' ? 'dark-Create-button': "Create-button"} onClick={() => createCalendar(name, setRedirect, setIncorrect, setName)} type="submit">Create</div>
               </div>
             </form>
-            <button className="Create-button" onClick={() => setGoLobby(true)}>Back to Lobby</button>
+            <button className={dark === 'true' ? 'dark-Create-button': "Create-button"} onClick={() => setGoLobby(true)}>Back to Lobby</button>
         </div>
     </div>
   );

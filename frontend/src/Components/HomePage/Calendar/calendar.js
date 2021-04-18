@@ -14,6 +14,9 @@ function Calendar() {
   const [clickedDay, setClickedDay] = useState(moment());
   const firstDay = value.clone().startOf("month")
   const lastDay = value.clone().endOf("month")
+
+  //Dark mode css
+  var dark = sessionStorage.getItem('darkmode')
   
   useEffect(() =>{
     setCalendar(createCalendar(value));
@@ -35,7 +38,7 @@ function Calendar() {
 
   return (
     <div className="calendar-box">
-      <div className="month-selector">
+      <div className={dark === 'true' ? 'dark-month-selector' : "month-selector"}>
         <FontAwesomeIcon icon={faChevronLeft} onClick={() =>prevMonth()}/>
         {value.format("MMMM")}&nbsp;&nbsp;{value.format("YYYY")}
         <FontAwesomeIcon icon={faChevronRight} onClick={() =>nextMonth()}/>
@@ -43,7 +46,8 @@ function Calendar() {
        {calendar.map((week) => (
          <div>
            {week.map((day) => (
-             <div className={!firstDay.isAfter(day) && !lastDay.isBefore(day) ? "day": 'diffMonthDay'} onClick={() => clickDay(day)}>
+             <div className={!firstDay.isAfter(day) && !lastDay.isBefore(day) && dark ==='true'? "dark-day": 
+             !firstDay.isAfter(day) && !lastDay.isBefore(day) ? 'day': dark==='true' ? 'dark-diffMonthDay': 'diffMonthDay'} onClick={() => clickDay(day)}>
                <div className={clickedDay.isSame(day, "day") && value.format('M') === day.format('M') ? "selected": ""}>
                {day.format("D")}</div>
                </div>

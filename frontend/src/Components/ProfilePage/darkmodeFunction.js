@@ -19,7 +19,7 @@ export default function DarkModeFunction(darkMode){
       })
         .then(response => response.text())
         .then(data => {
-            console.log(data)
-            
+            var res = JSON.parse(data)
+            sessionStorage.setItem("darkmode", res.darkmode)
         })
 }

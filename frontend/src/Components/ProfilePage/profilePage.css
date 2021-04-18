@@ -19,3 +19,11 @@
     justify-content: center;
     align-items: center;
 }
+
+.dark-profile-header{
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}

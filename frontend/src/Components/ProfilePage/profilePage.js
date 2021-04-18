@@ -15,6 +15,9 @@ function ProfilePage() {
   const [email, setEmail] = useState('')
   const [darkMode, setDarkMode] = useState(false)
 
+  //Dark mode css
+  var dark = sessionStorage.getItem('darkmode')
+
   useEffect(() => {
     // Calls this request only once per render
     ProfilePull(setUsername, setEmail, setDarkMode)
@@ -44,12 +47,13 @@ function ProfilePage() {
       DarkModeFunction(darkMode)
   }
 
+  console.log(dark === true)
   return (
-    <div className="Login-Container">
+    <div className={dark === 'true' ? "dark-Login-Container" : "Login-Container"}>
       {renderRedirect()}
       {redirectHome()}
       <div className="Login-Bubble-Container">
-          <div className="profile-header">
+          <div className={dark === 'true' ? 'dark-profile-header' :  "profile-header"}>
             <h1>Your Profile.</h1>
             <div className="Lobby-profile" onClick={() => setGoHome(true)}><FontAwesomeIcon icon={faHome} size="2x"/></div>
           </div>

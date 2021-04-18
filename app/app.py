@@ -91,6 +91,7 @@ def login():
     if(database.users.find({"username": username}).count() > 0):
         user = database.users.find({"username": username})
         userPW = user[0].get('hashedPassword')
+        darkmodeVal = user[0].get('darkmode')
         if(bcrypt.check_password_hash(userPW, password)):
             # increment_login_number()
             # encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(
@@ -101,7 +102,7 @@ def login():
             # update collection users with username as username and set token to new encoded
             users.update_one({'username': username}, {
                              '$set': {'token': hashedToken}})
-            msg = {"token": token}
+            msg = {"token": token, "darkmode": darkmodeVal}
             return jsonify(msg), 200
         else:
             msg = {"msg": "Invalid login"}
@@ -197,7 +198,7 @@ def darkmode():
         print(username, flush=True)
         print(darkmode, flush=True)
         users.update_one({'username': username}, {'$set': {'darkmode': darkmode}})
-        msg = {"msg": "zero"}
+        msg = {"darkmode": darkmode}
         return jsonify(msg), 200
     print("User not found", flush=True)
     msg = {"msg": "zero"}

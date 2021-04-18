@@ -5,6 +5,14 @@
   height: 100vh;
 }
 
+.dark-Create-Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgba(26, 26, 26, 1);
+}
+
 .Create-Bubble-Container {
   display: flex;
   justify-content: center;
@@ -15,6 +23,14 @@
 
 .Create-Bubble {
   background-color: white;
+  width: 50vw;
+  height: 50vmin;
+  border-radius: 20px;
+  box-shadow: 5px 4px 2px 1px rgba(0, 0, 0, 0.3);
+}
+
+.dark-Create-Bubble {
+  background-color: rgba(122, 122, 122, 0.76);
   width: 50vw;
   height: 50vmin;
   border-radius: 20px;
@@ -44,6 +60,17 @@
   font-size: 22px;
 }
 
+.dark-Create-input {
+  width: 25vw;
+  padding: 8px;
+  margin: 8px 0;
+  border: none;
+  outline: none;
+  font-size: 22px;
+  background-color: rgba(199, 199, 199, 0.76);
+  color: white;
+}
+
 .Create-button {
   background-color: white;
   color: black;
@@ -59,9 +86,28 @@
   text-align: center;
 }
 
+.dark-Create-button {
+  background-color: rgba(122, 122, 122, 0.76);
+  color: white;
+  margin: 0 0;
+  width: 40%;
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 20px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
+  transition-duration: 0.2s;
+  outline: none;
+  text-align: center;
+}
+
 .Create-button:hover {
   color: white;
   background-color: #f7c3c3;
+}
+
+.dark-Create-button:hover {
+  color: white;
+  background-color: #888888;
 }
 
 .Create-create-div {
@@ -77,4 +123,8 @@
 
 .incorrect-credentials {
   color: red;
+}
+
+.dark-create-title{
+  color: white;
 }
