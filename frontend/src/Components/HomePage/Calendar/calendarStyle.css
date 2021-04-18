@@ -24,6 +24,20 @@
     color: white;
   }
 
+  .dark-day{
+    width: 8vw;
+    height: 12vh;
+    display: inline-block;
+    text-align: left;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    border-top: 60%;
+    background-color: rgba(199, 133, 133, .7);
+    border-color: rgba(199, 133, 133, .6);
+    color: white;
+  }
+
   .diffMonthDay{
     width: 8vw;
     height: 12vh;
@@ -35,6 +49,20 @@
     border-top: 60%;
     border-color: rgba(199, 133, 133, .6);
     opacity: .5;
+  }
+
+  .dark-diffMonthDay{
+    width: 8vw;
+    height: 12vh;
+    display: inline-block;
+    text-align: left;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    border-top: 60%;
+    border-color: rgba(199, 133, 133, .6);
+    opacity: 1;
+    color: white;
   }
 
   .selected {
@@ -56,3 +84,16 @@
       width: 24vw;
       justify-content: space-between;
   }
+
+  .dark-month-selector{
+    color: white;
+    opacity: 1;
+    align-self: center;
+    align-content: flex-end;
+    font-weight: bold;
+    font-size: 2.25vmax;
+    margin-bottom: 1.75vh;
+    display: flex;
+    width: 24vw;
+    justify-content: space-between;
+}

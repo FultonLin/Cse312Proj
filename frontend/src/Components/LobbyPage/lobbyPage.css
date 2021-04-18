@@ -4,6 +4,13 @@
     height: 100%;
 }
 
+.dark-Lobby-container{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: rgba(26, 26, 26, 1);
+}
+
 .Lobby-headers{
     display: flex;
     justify-content: space-between;
@@ -12,6 +19,11 @@
 
 .Lobby-title{
     margin-left: 2%;
+}
+
+.dark-Lobby-title{
+    margin-left: 2%;
+    color: white
 }
 
 .Lobby-profile{
@@ -92,4 +104,8 @@
       margin-top: 5%;
       width: 40vw;
       opacity: 1;
+  }
+
+  .dark-calendar-title{
+      color: white;
   }

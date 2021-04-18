@@ -11,6 +11,10 @@ import { faUser, faHome} from '@fortawesome/free-solid-svg-icons'
 function HomePage() {
 
   const [goHome, setGoHome] = useState(false);
+  const [goProfile, setGoProfile] = useState(false);
+
+   //Dark mode css
+   var dark = sessionStorage.getItem('darkmode')
 
   const renderRedirect = () =>{       //If no token, sends user back to login
     var token = sessionStorage.getItem("token")
@@ -29,15 +33,25 @@ function HomePage() {
     }
   }
 
+  //Goes to profile page
+  const redirectProfile = () =>{
+    if(goProfile){
+      return(
+        <Redirect to="/profile"/>
+      )
+    }
+  }
+
   return (
-    <div className="Home-container">
+    <div className={dark === 'true'? 'dark-Home-container': "Home-container"}>
       {renderRedirect()}
       {redirectHome()}
+      {redirectProfile()}
         <div className="Lobby-headers">
-          <h1 className="Lobby-title">Calendarify.</h1>
+          <h1 className={dark === 'true'? 'dark-Lobby-title': "Lobby-title"}>Calendarify.</h1>
           <div className="Nav-buttons">
             <div className="Lobby-profile" onClick={() => setGoHome(true)}><FontAwesomeIcon icon={faHome} size="2x"/></div>
-            <div className="Lobby-profile"><FontAwesomeIcon icon={faUser} size="2x"/></div>
+            <div className="Lobby-profile" onClick={() => setGoProfile(true)}><FontAwesomeIcon icon={faUser} size="2x"/></div>
           </div>
         </div>
         <div className="Home-content-container">

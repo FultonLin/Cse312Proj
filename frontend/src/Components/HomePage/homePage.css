@@ -5,6 +5,14 @@
     height: 100vh;
 }
 
+.dark-Home-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    height: 100vh;
+    background-color: rgba(26, 26, 26, 1);
+}
+
 .Home-title{
     margin-left: 2%;
 }
