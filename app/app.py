@@ -115,7 +115,6 @@ def login():
 
 @app.route('/app/logout', methods=['POST'])
 def logout():
-    print("arrived",flush=True)
     data = request.get_json(force=True)
     token = data.get('token', None)
     account = ''
@@ -123,9 +122,9 @@ def logout():
     for user in usersArr:
         hashedToken = user.get('token')
         if(bcrypt.check_password_hash(hashedToken, token)):
-            loggedIn.remove(hashedToken)
-    msg = {"msg": "zero"}
-    return jsonify(msg), 200
+            if loggedIn != None and hashedToken in loggedIn:
+                loggedIn.remove(hashedToken)
+    return 200
 
 @app.route('/app/calendar/create', methods=['POST'])
 def calendarcreate():
