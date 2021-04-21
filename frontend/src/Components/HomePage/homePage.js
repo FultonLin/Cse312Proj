@@ -1,17 +1,23 @@
 import React, {useState} from 'react'
 import './homePage.css'
 import {BrowserRouter as Router, Route, Switch, Link, Redirect, useLocation} from "react-router-dom";
+import logoutFunction from '../Logout/logoutFunction'
 
 import Calendar from './Calendar/calendar'
 import Social from './Social/social'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faHome} from '@fortawesome/free-solid-svg-icons'
+import { faUser, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 function HomePage() {
 
   const [goHome, setGoHome] = useState(false);
   const [goProfile, setGoProfile] = useState(false);
+  const [goLogin, setGoLogin] = useState(false);
+
+  window.addEventListener('beforeunload', (event) => {
+    event.returnValue = logoutFunction(setGoLogin);
+  });
 
    //Dark mode css
    var dark = sessionStorage.getItem('darkmode')
@@ -42,6 +48,15 @@ function HomePage() {
     }
   }
 
+  //Go to login
+  const redirectLogin = () => {
+    if (goLogin) {
+      return (
+        <Redirect to="/login" />
+      )
+    }
+  }
+
   return (
     <div className={dark === 'true'? 'dark-Home-container': "Home-container"}>
       {renderRedirect()}
@@ -50,6 +65,7 @@ function HomePage() {
         <div className="Lobby-headers">
           <h1 className={dark === 'true'? 'dark-Lobby-title': "Lobby-title"}>Calendarify.</h1>
           <div className="Nav-buttons">
+          <div className="Lobby-profile" onClick={() => logoutFunction(setGoLogin)}><FontAwesomeIcon icon={faSignOutAlt} size="2x" /></div>
             <div className="Lobby-profile" onClick={() => setGoHome(true)}><FontAwesomeIcon icon={faHome} size="2x"/></div>
             <div className="Lobby-profile" onClick={() => setGoProfile(true)}><FontAwesomeIcon icon={faUser} size="2x"/></div>
           </div>

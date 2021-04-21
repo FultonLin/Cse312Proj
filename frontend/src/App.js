@@ -7,6 +7,7 @@ import HomePage from './Components/HomePage/homePage';
 import LobbyPage from './Components/LobbyPage/lobbyPage';
 import CalendarCreatePage from './Components/CalendarCreatePage/calendarCreatePage';
 import ProfilePage from './Components/ProfilePage/profilePage';
+import logoutFunction from './Components/Logout/logoutFunction'
 
 function App() {
 

@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react'
 import './lobbyPage.css'
 import CalendarBubble from './lobbyComponents/CalendarBubble'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser} from '@fortawesome/free-solid-svg-icons'
+import { faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { Link, Redirect } from "react-router-dom";
+import logoutFunction from '../Logout/logoutFunction'
 
 function LobbyPage() {
 
   const [joined, setJoined] = useState(false);
   const [renderjoined, setrenderjoined] = useState(false);
-  const [goProfile, setGoProfile] = useState(false)
-  const [goCreate, setGoCreate] = useState(false)
+  const [goProfile, setGoProfile] = useState(false);
+  const [goCreate, setGoCreate] = useState(false);
+  const [goLogin, setGoLogin] = useState(false);
 
   //Dark mode css
   var dark = sessionStorage.getItem('darkmode')
@@ -57,7 +59,8 @@ function LobbyPage() {
       for(var i = 0; i < joined.length;i++){
         var nameplaceholder = joined[i].name;
         var calendarnumber = joined[i].membercount;
-        placeholder.push(<CalendarBubble title={nameplaceholder} number={calendarnumber}/>);
+        var uniqueId = "uniqueId" + i
+        placeholder.push(<CalendarBubble key={uniqueId} title={nameplaceholder} number={calendarnumber} />);
       }
       return (placeholder)
     }
@@ -80,16 +83,27 @@ function LobbyPage() {
       )
     }
   }
-  
+
+  //Go to login
+  const redirectLogin = () => {
+    if (goLogin) {
+      return (
+        <Redirect to="/login" />
+      )
+    }
+  }
+
   return (
 
     <div className={dark === 'true' ? 'dark-Lobby-container' : "Lobby-container"}>
       {renderRedirect()}
       {redirectProfile()}
       {redirectCreate()}
+      {redirectLogin()}
         <div className="Lobby-headers">
           <h1 className={dark === 'true' ? "dark-Lobby-title": "Lobby-title"}>Calendarify.</h1>
           <div className="Nav-buttons">
+          <div className="Lobby-profile" onClick={() => logoutFunction(setGoLogin)}><FontAwesomeIcon icon={faSignOutAlt} size="2x" /></div>
             <div className="Lobby-profile" onClick={() => setGoProfile(true)}><FontAwesomeIcon icon={faUser} size="2x"/></div>
           </div>
         </div>

@@ -15,7 +15,7 @@ users = database["users"]
 calendars = database["calendar"]
 secret = "supersecretstring"
 login_number = 0
-
+loggedIn = []
 
 @app.errorhandler(404)
 def not_found(e):
@@ -53,6 +53,7 @@ def create():
             #     login_number)}, secret, algorithm="HS256")
             token = genToken()
             hashedToken = bcrypt.generate_password_hash(token) #Hashed token, can't store plain token in db
+            loggedIn.append(hashedToken)
             dataVal = {"username": username,
                        "email": email, "hashedPassword": hashpass, "token": hashedToken, "darkmode": False}
             x = users.insert_one(dataVal)
@@ -99,6 +100,7 @@ def login():
 
             token = genToken()
             hashedToken = bcrypt.generate_password_hash(token) #Hashed token, can't store plain token in db
+            loggedIn.append(hashedToken)
             # update collection users with username as username and set token to new encoded
             users.update_one({'username': username}, {
                              '$set': {'token': hashedToken}})
@@ -111,6 +113,20 @@ def login():
         msg = {"msg": "Invalid login"}
         return jsonify(msg), 200
 
+
+@app.route('/app/logout', methods=['POST'])
+def logout():
+    print("arrived",flush=True)
+    data = request.get_json(force=True)
+    token = data.get('token', None)
+    account = ''
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            loggedIn.remove(hashedToken)
+    msg = {"msg": "zero"}
+    return jsonify(msg), 200
 
 @app.route('/app/calendarcreate', methods=['POST'])
 def calendarcreate():
@@ -142,6 +158,8 @@ def calendaradd():
 @app.route('/app/lobby', methods=['POST'])
 def lobby():
     data = request.get_json(force=True)
+    print("================================",flush=True)
+    print(loggedIn,flush=True)
     token = data.get('token', None)
     account = ''
     usersArr = users.find({})

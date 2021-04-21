@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link, Redirect } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faHome} from '@fortawesome/free-solid-svg-icons'
+import { faUser, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import './profilePage.css';
 import ProfilePull from './profileFunction';
 import DarkModeFunction from './darkmodeFunction';
+import logoutFunction from '../Logout/logoutFunction'
 
 function ProfilePage() {
 
@@ -14,6 +15,7 @@ function ProfilePage() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('')
   const [darkMode, setDarkMode] = useState(false)
+  const [goLogin, setGoLogin] = useState(false);
 
   //Dark mode css
   var dark = sessionStorage.getItem('darkmode')
@@ -42,6 +44,15 @@ function ProfilePage() {
     }
   }
 
+  //Go to login
+  const redirectLogin = () => {
+    if (goLogin) {
+      return (
+        <Redirect to="/login" />
+      )
+    }
+  }
+
   const triggerDarkCall = () =>{
       setDarkMode(!darkMode)
       DarkModeFunction(darkMode)
@@ -55,6 +66,7 @@ function ProfilePage() {
       <div className="Login-Bubble-Container">
           <div className={dark === 'true' ? 'dark-profile-header' :  "profile-header"}>
             <h1>Your Profile.</h1>
+          <div className="Lobby-profile" onClick={() => logoutFunction(setGoLogin)}><FontAwesomeIcon icon={faSignOutAlt} size="2x" /></div>
             <div className="Lobby-profile" onClick={() => setGoHome(true)}><FontAwesomeIcon icon={faHome} size="2x"/></div>
           </div>
         <div className="Login-Bubble">
