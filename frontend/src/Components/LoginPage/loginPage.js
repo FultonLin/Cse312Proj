@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './loginPage.css'
 import { Link, Redirect } from "react-router-dom";
 import loginCheck from './loginFunction';
@@ -39,19 +39,19 @@ function LoginPage() {
   return (
     <div className="Login-Container">
       {returnRedirect()}
-        <div className="Login-Bubble-Container">
-            <h1>Welcome to Calendarify.</h1>
-            <div className="Login-Bubble">
-                <div className="Login-Text">
-                    <h1>Login</h1>
-                    <input type = "text" onChange={handleUsernameChange} value={username} className="Login-input" placeholder="Username"/>
-                    <input type = "password" onChange={handlePasswordChange} value={password} className="Login-input" placeholder="Password" type="password"/>
-                    {renderIncorrect()}
-                    <div className="Login-button" onClick={() => loginCheck(username, password, setRedirect, setIncorrect, setUsername, setPassword)}>Log in</div>
-                </div>
-            </div>
-            <Link to="/create"><button className="Login-create-div"><p1>Create an account</p1></button></Link>
+      <div className="Login-Bubble-Container">
+        <h1>Welcome to Calendarify.</h1>
+        <div className="Login-Bubble">
+          <div className="Login-Text">
+            <h1>Login</h1>
+            <input type = "text" onChange={handleUsernameChange} value={username} className="Login-input" placeholder="Username"/>
+            <input type="password" onChange={handlePasswordChange} value={password} className="Login-input" placeholder="Password" />
+            {renderIncorrect()}
+            <div className="Login-button" onClick={() => loginCheck(username, password, setRedirect, setIncorrect, setUsername, setPassword)}>Log in</div>
+          </div>
         </div>
+        <Link to="/create"><button className="Login-create-div"><p1>Create an account</p1></button></Link>
+      </div>
     </div>
   );
 }

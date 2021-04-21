@@ -15,7 +15,7 @@ users = database["users"]
 calendars = database["calendar"]
 secret = "supersecretstring"
 login_number = 0
-
+loggedIn = []
 
 @app.errorhandler(404)
 def not_found(e):
@@ -29,7 +29,6 @@ def index():
 
 @app.route('/app/create', methods=['POST'])
 def create():
-    print("THIS IS A TEST", flush=True)
     data = request.get_json(force=True)
     username = data.get('username', None)
     email = data.get('email', None)
@@ -53,6 +52,7 @@ def create():
             #     login_number)}, secret, algorithm="HS256")
             token = genToken()
             hashedToken = bcrypt.generate_password_hash(token) #Hashed token, can't store plain token in db
+            loggedIn.append(hashedToken)
             dataVal = {"username": username,
                        "email": email, "hashedPassword": hashpass, "token": hashedToken, "darkmode": False}
             x = users.insert_one(dataVal)
@@ -99,6 +99,7 @@ def login():
 
             token = genToken()
             hashedToken = bcrypt.generate_password_hash(token) #Hashed token, can't store plain token in db
+            loggedIn.append(hashedToken)
             # update collection users with username as username and set token to new encoded
             users.update_one({'username': username}, {
                              '$set': {'token': hashedToken}})
@@ -112,7 +113,20 @@ def login():
         return jsonify(msg), 200
 
 
-@app.route('/app/calendarcreate', methods=['POST'])
+@app.route('/app/logout', methods=['POST'])
+def logout():
+    data = request.get_json(force=True)
+    token = data.get('token', None)
+    account = ''
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            if loggedIn != None and hashedToken in loggedIn:
+                loggedIn.remove(hashedToken)
+    return 200
+
+@app.route('/app/calendar/create', methods=['POST'])
 def calendarcreate():
     data = request.get_json(force=True)
     name = data.get('name', None)
@@ -129,16 +143,47 @@ def calendarcreate():
                         "$push": {"Joined Calendars": name}}, upsert=True)
             msg = {"msg": name}
             return jsonify(msg), 200
-    return 400
+    return 200
 
 
-@app.route('/app/calendarAdd', methods=['POST'])
-def calendaradd():
-    return NotImplemented
+@app.route('/app/calendar/join', methods=['POST'])
+def joincalendar():
+    data = request.get_json(force=True)
+    token = data.get('token', None)
+    name = data.get('name',None)
+    account = None
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            users.update({"token": hashedToken}, {
+                        "$push": {"Joined Calendars": name}}, upsert=True)
+            calendars.update({'name':name},{'$inc': {'membercount': 1}}, upsert=True)
+    msg = {"msg": "ok"}
+    return jsonify(msg), 200
+
+@app.route('/app/calendar/all', methods=['POST'])
+def calendar():
+    data = request.get_json(force=True)
+    token = data.get('token', None)
+    account = None
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            account = user
+    joinedCalendars = account.get('Joined Calendars')
+    if joinedCalendars == None:
+        joinedCalendars = []
+    allCalendars = calendars.find({},{'_id':False,'name':True})
+    result = []
+    for calendar in allCalendars:
+        name = calendar.get('name')
+        if calendar.get('name') not in joinedCalendars:
+            result.append({'name':name})
+    return jsonify(result),200
 
 # This will query logged in user to find calendars they are in and send the names and # of poeple in them to lobby
-
-
 @app.route('/app/lobby', methods=['POST'])
 def lobby():
     data = request.get_json(force=True)

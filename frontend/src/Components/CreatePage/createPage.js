@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './createPage.css';
 import { Link, Redirect } from 'react-router-dom';
 import createCheck from './createFunction';
@@ -23,7 +23,7 @@ function CreatePage() {
     setPassword(e.target.value)
   }
 
-  // If login valid go to lobby
+  // If valid go to lobby
   const returnRedirect = () =>{
     if(redirect){
       return(
