@@ -6,10 +6,12 @@ import { faUsers } from '@fortawesome/free-solid-svg-icons'
 
 function CalendarBubble({ title, number }) {
   return (
-    <Link to="/home" style={{ textDecoration: 'none' }}><button className="Lobby-calendar-bubble">
+    <Link to={{ pathname: '/home', data: { title } }} style={{ textDecoration: 'none' }}>
+      <button className="Lobby-calendar-bubble">
         <h1 className="Lobby-calendar-title">{title}</h1>
         <h1 className="Lobby-number">{number}&nbsp;<FontAwesomeIcon icon={faUsers}/></h1>
-    </button></Link>
+      </button>
+    </Link >
   );
 }
 
