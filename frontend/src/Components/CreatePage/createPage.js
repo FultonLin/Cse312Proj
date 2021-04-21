@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './createPage.css';
 import { Link, Redirect } from 'react-router-dom';
 import createCheck from './createFunction';

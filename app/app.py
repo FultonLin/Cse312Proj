@@ -29,7 +29,6 @@ def index():
 
 @app.route('/app/create', methods=['POST'])
 def create():
-    print("THIS IS A TEST", flush=True)
     data = request.get_json(force=True)
     username = data.get('username', None)
     email = data.get('email', None)
@@ -160,7 +159,8 @@ def joincalendar():
         if(bcrypt.check_password_hash(hashedToken, token)):
             users.update({"token": hashedToken}, {
                         "$push": {"Joined Calendars": name}}, upsert=True)
-    msg = {"msg": "good"}
+            calendars.update({'name':name},{'$inc': {'membercount': 1}}, upsert=True)
+    msg = {"msg": "ok"}
     return jsonify(msg), 200
 
 @app.route('/app/calendar/all', methods=['POST'])
@@ -174,28 +174,20 @@ def calendar():
         if(bcrypt.check_password_hash(hashedToken, token)):
             account = user
     joinedCalendars = account.get('Joined Calendars')
-    allCalendars = calendars.find({},{'_id':False,'name':True})
-    allCalendarsNames = []
-    for calendar in allCalendars:
-        allCalendarsNames.append(calendar.get('name'))
-    result = []
-    print(type(joinedCalendars),flush=True)
     if joinedCalendars == None:
-        for cal in allCalendarsNames:
-            result.append({'name':cal})
-        return jsonify(result),200
-    else:
-        notJoined = list(set(allCalendarsNames)^set(joinedCalendars))
-        for notIn in notJoined:
-            result.append({'name':notIn})
-        return jsonify(result),200
+        joinedCalendars = []
+    allCalendars = calendars.find({},{'_id':False,'name':True})
+    result = []
+    for calendar in allCalendars:
+        name = calendar.get('name')
+        if calendar.get('name') not in joinedCalendars:
+            result.append({'name':name})
+    return jsonify(result),200
 
 # This will query logged in user to find calendars they are in and send the names and # of poeple in them to lobby
 @app.route('/app/lobby', methods=['POST'])
 def lobby():
     data = request.get_json(force=True)
-    print("================================",flush=True)
-    print(loggedIn,flush=True)
     token = data.get('token', None)
     account = ''
     usersArr = users.find({})

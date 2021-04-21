@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './JoinCalendarBubble.css'
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import joinCalendar from './joinCalendarFunction'
 
 function JoinCalendarBubble({ title }) {

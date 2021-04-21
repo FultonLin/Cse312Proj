@@ -1,11 +1,9 @@
 import React, {useState} from 'react'
 import './homePage.css'
-import {BrowserRouter as Router, Route, Switch, Link, Redirect, useLocation} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import logoutFunction from '../Logout/logoutFunction'
-
 import Calendar from './Calendar/calendar'
 import Social from './Social/social'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
@@ -62,6 +60,7 @@ function HomePage() {
       {renderRedirect()}
       {redirectHome()}
       {redirectProfile()}
+      {redirectLogin()}
         <div className="Lobby-headers">
           <h1 className={dark === 'true'? 'dark-Lobby-title': "Lobby-title"}>Calendarify.</h1>
           <div className="Nav-buttons">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import './profilePage.css';
 import ProfilePull from './profileFunction';
@@ -72,7 +72,7 @@ function ProfilePage() {
         </div>
         <div className="Login-Bubble">
           <div className="Login-Text">
-            <h1>Profile</h1>
+            <h>Profile</h>
             <div className="profile-subcontainer">
                 <h1 className="profilePage-subtitle">Your username:</h1>
                 <h>{username}</h>

@@ -3,7 +3,7 @@ import './lobbyPage.css'
 import CalendarBubble from './lobbyComponents/CalendarBubble'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import logoutFunction from '../Logout/logoutFunction'
 
 function LobbyPage() {

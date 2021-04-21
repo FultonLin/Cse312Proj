@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './joinCalendarPage.css';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faHome } from '@fortawesome/free-solid-svg-icons'
 import JoinCalendarBubble from './JoinCalendarBubble/JoinCalendarBubble'

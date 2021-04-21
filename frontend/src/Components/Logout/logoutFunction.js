@@ -13,8 +13,5 @@ export default function logoutFunction(setGoLogin) {
         body: JSON.stringify(data)
     })
         .then(response => response.text())
-        .then(data => {
-            var res = JSON.parse(data)
-            setGoLogin(true)
-        })
+        .then(setGoLogin(true))
 }
