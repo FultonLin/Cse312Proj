@@ -1,8 +1,6 @@
 import React from 'react'
 import './CalendarBubble.css'
-
-import {BrowserRouter as Router, Route, Switch, Link, Redirect, useLocation} from "react-router-dom";
-
+import { Link, Redirect } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUsers } from '@fortawesome/free-solid-svg-icons'
 

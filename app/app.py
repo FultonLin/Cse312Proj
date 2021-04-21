@@ -128,7 +128,7 @@ def logout():
     msg = {"msg": "zero"}
     return jsonify(msg), 200
 
-@app.route('/app/calendarcreate', methods=['POST'])
+@app.route('/app/calendar/create', methods=['POST'])
 def calendarcreate():
     data = request.get_json(force=True)
     name = data.get('name', None)
@@ -145,16 +145,52 @@ def calendarcreate():
                         "$push": {"Joined Calendars": name}}, upsert=True)
             msg = {"msg": name}
             return jsonify(msg), 200
-    return 400
+    return 200
 
 
-@app.route('/app/calendarAdd', methods=['POST'])
-def calendaradd():
-    return NotImplemented
+@app.route('/app/calendar/join', methods=['POST'])
+def joincalendar():
+    data = request.get_json(force=True)
+    token = data.get('token', None)
+    name = data.get('name',None)
+    account = None
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            users.update({"token": hashedToken}, {
+                        "$push": {"Joined Calendars": name}}, upsert=True)
+    msg = {"msg": "good"}
+    return jsonify(msg), 200
+
+@app.route('/app/calendar/all', methods=['POST'])
+def calendar():
+    data = request.get_json(force=True)
+    token = data.get('token', None)
+    account = None
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            account = user
+    joinedCalendars = account.get('Joined Calendars')
+    allCalendars = calendars.find({},{'_id':False,'name':True})
+    allCalendarsNames = []
+    for calendar in allCalendars:
+        allCalendarsNames.append(calendar.get('name'))
+    result = []
+    print(type(joinedCalendars),flush=True)
+    if joinedCalendars == None:
+        for cal in allCalendarsNames:
+            result.append({'name':cal})
+        return jsonify(result),200
+    else:
+        notJoined = list(set(allCalendarsNames)^set(joinedCalendars))
+        for notIn in notJoined:
+            result.append({'name':notIn})
+        return jsonify(result),200
 
 # This will query logged in user to find calendars they are in and send the names and # of poeple in them to lobby
-
-
 @app.route('/app/lobby', methods=['POST'])
 def lobby():
     data = request.get_json(force=True)

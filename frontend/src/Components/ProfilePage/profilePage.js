@@ -63,29 +63,30 @@ function ProfilePage() {
     <div className={dark === 'true' ? "dark-Login-Container" : "Login-Container"}>
       {renderRedirect()}
       {redirectHome()}
+      {redirectLogin()}
       <div className="Login-Bubble-Container">
-          <div className={dark === 'true' ? 'dark-profile-header' :  "profile-header"}>
-            <h1>Your Profile.</h1>
+        <div className={dark === 'true' ? 'dark-profile-header' :  "profile-header"}>
+          <h1>Your Profile.</h1>
           <div className="Lobby-profile" onClick={() => logoutFunction(setGoLogin)}><FontAwesomeIcon icon={faSignOutAlt} size="2x" /></div>
-            <div className="Lobby-profile" onClick={() => setGoHome(true)}><FontAwesomeIcon icon={faHome} size="2x"/></div>
-          </div>
+          <div className="Lobby-profile" onClick={() => setGoHome(true)}><FontAwesomeIcon icon={faHome} size="2x"/></div>
+        </div>
         <div className="Login-Bubble">
-                <div className="Login-Text">
-                    <h1>Profile</h1>
-                    <div className="profile-subcontainer">
-                        <h1 className="profilePage-subtitle">Your username:</h1>
-                        <h>{username}</h>
-                    </div>
-                    <div className="profile-subcontainer">
-                        <h1 className="profilePage-subtitle">Your email:</h1>
-                        <h>{email}</h>
-                    </div>
-                    <div className="darkmode-container">
-                        <h1 className="profilePage-subtitle">Dark mode:</h1>
-                        <input type="checkbox" className="darkmode-checkbox" onClick={() => triggerDarkCall()} checked={darkMode}/>
-                    </div>
-                </div>
+          <div className="Login-Text">
+            <h1>Profile</h1>
+            <div className="profile-subcontainer">
+                <h1 className="profilePage-subtitle">Your username:</h1>
+                <h>{username}</h>
             </div>
+            <div className="profile-subcontainer">
+                <h1 className="profilePage-subtitle">Your email:</h1>
+                <h>{email}</h>
+            </div>
+            <div className="darkmode-container">
+                <h1 className="profilePage-subtitle">Dark mode:</h1>
+                <input type="checkbox" className="darkmode-checkbox" onClick={() => triggerDarkCall()} checked={darkMode}/>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

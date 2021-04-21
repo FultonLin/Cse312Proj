@@ -23,7 +23,7 @@ function CreatePage() {
     setPassword(e.target.value)
   }
 
-  // If login valid go to lobby
+  // If valid go to lobby
   const returnRedirect = () =>{
     if(redirect){
       return(

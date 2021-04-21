@@ -1,5 +1,4 @@
 export default function logoutFunction(setGoLogin) {
-    console.log("x")
     var token = sessionStorage.getItem("token")
     sessionStorage.clear();
     let data = {
