@@ -122,9 +122,12 @@ def logout():
     for user in usersArr:
         hashedToken = user.get('token')
         if(bcrypt.check_password_hash(hashedToken, token)):
-            if loggedIn != None and hashedToken in loggedIn:
+            if loggedIn != None and token in loggedIn:
+                print("======================================",flush=True)
+                print(loggedIn,flush=True)
                 loggedIn.remove(token)
-    return 200
+    msg = {"msg":"good"}
+    return jsonify(msg),200
 
 @app.route('/app/calendar/create', methods=['POST'])
 def calendarcreate():
@@ -253,7 +256,6 @@ def darkmode():
 
 @app.route('/app/home', methods=['POST'])
 def calendarload():
-    print("======================================",flush=True)
     data = request.get_json(force=True)
     token = data.get('token',None)
     title = data.get('paramData',None).get('title',None)
