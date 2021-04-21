@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import './homePage.css'
-import { Redirect } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import logoutFunction from '../Logout/logoutFunction'
 import Calendar from './Calendar/calendar'
 import Social from './Social/social'
@@ -8,17 +8,43 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 function HomePage() {
-
+  const [calendarInfo, setCalendarInfo] = useState(false);
   const [goHome, setGoHome] = useState(false);
   const [goProfile, setGoProfile] = useState(false);
   const [goLogin, setGoLogin] = useState(false);
+  //Dark mode css
+  var dark = sessionStorage.getItem('darkmode');
+  var paramData = useLocation().data;
+
 
   window.addEventListener('beforeunload', (event) => {
     event.returnValue = logoutFunction(setGoLogin);
   });
 
-   //Dark mode css
-   var dark = sessionStorage.getItem('darkmode')
+  useEffect(() => {
+    // Calls this request only once per render
+    var token = sessionStorage.getItem("token")
+    let data = {
+      'token': token,
+      paramData,
+    }
+    console.log(window.location.pathname)
+    fetch('/app/home', {
+      method: 'post',
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.text())
+      .then(data => {
+        var res = JSON.parse(data)
+        setCalendarInfo(res)
+        console.log(res)
+      })
+  }, []);
+
 
   const renderRedirect = () =>{       //If no token, sends user back to login
     var token = sessionStorage.getItem("token")
@@ -71,10 +97,11 @@ function HomePage() {
         </div>
         <div className="Home-content-container">
           <div className="Calendar-container">
-            <Calendar/>
+          <div></div>
+          <Calendar/>
           </div>
           <div className="Social-container">
-            <Social/>
+          <Social key="social1" title={calendarInfo.name} count={calendarInfo.membercount} members={calendarInfo.members} online={calendarInfo.online} />
           </div>
         </div>
     </div>

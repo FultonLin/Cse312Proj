@@ -52,7 +52,7 @@ def create():
             #     login_number)}, secret, algorithm="HS256")
             token = genToken()
             hashedToken = bcrypt.generate_password_hash(token) #Hashed token, can't store plain token in db
-            loggedIn.append(hashedToken)
+            loggedIn.append(token)
             dataVal = {"username": username,
                        "email": email, "hashedPassword": hashpass, "token": hashedToken, "darkmode": False}
             x = users.insert_one(dataVal)
@@ -99,7 +99,7 @@ def login():
 
             token = genToken()
             hashedToken = bcrypt.generate_password_hash(token) #Hashed token, can't store plain token in db
-            loggedIn.append(hashedToken)
+            loggedIn.append(token)
             # update collection users with username as username and set token to new encoded
             users.update_one({'username': username}, {
                              '$set': {'token': hashedToken}})
@@ -123,7 +123,7 @@ def logout():
         hashedToken = user.get('token')
         if(bcrypt.check_password_hash(hashedToken, token)):
             if loggedIn != None and hashedToken in loggedIn:
-                loggedIn.remove(hashedToken)
+                loggedIn.remove(token)
     return 200
 
 @app.route('/app/calendar/create', methods=['POST'])
@@ -141,6 +141,7 @@ def calendarcreate():
         if(bcrypt.check_password_hash(hashedToken, token)):
             users.update({"token": hashedToken}, {
                         "$push": {"Joined Calendars": name}}, upsert=True)
+            calendars.update({'name':name},{'$push': {'members': user.get('username')}}, upsert=True)
             msg = {"msg": name}
             return jsonify(msg), 200
     return 200
@@ -159,6 +160,7 @@ def joincalendar():
             users.update({"token": hashedToken}, {
                         "$push": {"Joined Calendars": name}}, upsert=True)
             calendars.update({'name':name},{'$inc': {'membercount': 1}}, upsert=True)
+            calendars.update({'name':name},{'$push': {'members': user.get('username')}}, upsert=True)
     msg = {"msg": "ok"}
     return jsonify(msg), 200
 
@@ -248,3 +250,23 @@ def darkmode():
     print("User not found", flush=True)
     msg = {"msg": "zero"}
     return jsonify(msg), 200
+
+@app.route('/app/home', methods=['POST'])
+def calendarload():
+    print("======================================",flush=True)
+    data = request.get_json(force=True)
+    token = data.get('token',None)
+    title = data.get('paramData',None).get('title',None)
+    account = ''
+    usersArr = users.find({})
+    currentlyLogged = []
+    for user in usersArr:
+        hashedToken = user.get('token')
+        for logged in loggedIn:
+            if bcrypt.check_password_hash(hashedToken, logged):
+                currentlyLogged.append(user.get('username'))
+    x = calendars.find_one({'name':title},{'_id':False,'name':True,'members':True,'membercount':True})
+    x['online'] = currentlyLogged
+    print(x,flush=True)
+    msg = {"msg": "zero"}
+    return jsonify(x), 200    

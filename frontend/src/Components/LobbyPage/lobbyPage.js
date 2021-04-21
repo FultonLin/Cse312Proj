@@ -57,6 +57,7 @@ function LobbyPage() {
   const renderJoinedsBubble = () =>{
     if(joined !== undefined && renderjoined === true){
       var placeholder = [];
+      console.log(joined)
       for(var i = 0; i < joined.length;i++){
         var nameplaceholder = joined[i].name;
         var calendarnumber = joined[i].membercount;
