@@ -14,36 +14,56 @@ function LobbyPage() {
   const [goCreate, setGoCreate] = useState(false);
   const [goJoin, setGoJoin] = useState(false);
   const [goLogin, setGoLogin] = useState(false);
+  const [username, setUsername] = useState('');
 
   //Dark mode css
   var dark = sessionStorage.getItem('darkmode')
   
 
-    useEffect(() => {
-      // Calls this request only once per render
-      var token = sessionStorage.getItem("token")
-      let data = {
-          'token' : token,
-        }
-      fetch('/app/lobby',{
-        method: 'post',
-        headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(data)
+  useEffect(() => {
+    // Calls this request only once per render
+    var token = sessionStorage.getItem("token")
+    let data = {
+        'token' : token,
+      }
+    fetch('/app/lobby',{
+      method: 'post',
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.text())
+      .then(data => {
+          var res = JSON.parse(data)
+          if(res.msg !== "zero"){
+            console.log(res)
+            setJoined(res)
+              console.log("here")
+              var token = sessionStorage.getItem("token")
+                let data = {
+                    'token' : token,
+                  }
+                fetch('/app/profile',{
+                  method: 'post',
+                  headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+                })
+                  .then(response => response.text())
+                  .then(data => {
+                      var res = JSON.parse(data)
+                      setUsername(res[0])
+                      setrenderjoined(true)
+                  })
+          
+          }
+
       })
-        .then(response => response.text())
-        .then(data => {
-            var res = JSON.parse(data)
-            if(res.msg !== "zero"){
-              console.log(res)
-              setJoined(res)
-              setrenderjoined(true)
-            }
-  
-        })
-    }, []);
+  }, []);
 
   const renderRedirect = () =>{       //If no token, sends user back to login
     var token = sessionStorage.getItem("token")
@@ -62,7 +82,7 @@ function LobbyPage() {
         var nameplaceholder = joined[i].name;
         var calendarnumber = joined[i].membercount;
         var uniqueId = "uniqueId" + i
-        placeholder.push(<CalendarBubble key={uniqueId} title={nameplaceholder} number={calendarnumber} />);
+        placeholder.push(<CalendarBubble key={uniqueId} title={nameplaceholder} number={calendarnumber} username={username}/>);
       }
       return (placeholder)
     }

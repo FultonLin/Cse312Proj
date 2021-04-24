@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
+from flask_socketio import SocketIO, send, emit
 import jwt
 import random
 
@@ -13,6 +14,7 @@ mongoClient = MongoClient("db", 27017)
 database = mongoClient["database"]
 users = database["users"]
 calendars = database["calendar"]
+socketIO = SocketIO(app, cors_allowed_origins="*")
 secret = "supersecretstring"
 login_number = 0
 loggedIn = []
@@ -272,3 +274,40 @@ def calendarload():
     print(x,flush=True)
     msg = {"msg": "zero"}
     return jsonify(x), 200    
+
+
+# Handles when someone joins a calendar
+
+# Holds all connected (users, socketID) and their calendar they're currently connected to
+connectedUsers = []
+
+@socketIO.on('connect')
+def test_connect():
+    print("Connection here!!!!!!")
+
+@socketIO.on("loggedin")
+def handleMssage(msg):
+    print("HEREEEEE")
+    msg['socketID'] = request.sid
+    connectedUsers.append(msg)
+    print(connectedUsers)
+    for user in connectedUsers:
+        if msg['title'] == user['title']:
+            emit('userUpdate', {'msg': connectedUsers}, room=user['socketID'])
+
+
+# Handles user leaving a calendar
+@socketIO.on('disconnect')
+def handleMessage():
+    socketIDDisc = request.sid
+    title = ''
+    for user in connectedUsers:
+        if user['socketID'] == socketIDDisc:
+            connectedUsers.remove(user)
+            title = user['title']
+    for user in connectedUsers:
+        if title == user['title']:
+            emit('userUpdate', {'msg': connectedUsers}, room=user['socketID'])
+
+if __name__ == '__main__':
+    socketio.run(app, host='0.0.0.0')

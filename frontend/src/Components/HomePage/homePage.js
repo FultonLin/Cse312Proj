@@ -6,20 +6,23 @@ import Calendar from './Calendar/calendar'
 import Social from './Social/social'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import io from "socket.io-client";
+let socket;
 
 function HomePage() {
   const [calendarInfo, setCalendarInfo] = useState(false);
   const [goHome, setGoHome] = useState(false);
   const [goProfile, setGoProfile] = useState(false);
   const [goLogin, setGoLogin] = useState(false);
+  const [onlineUsers, setOnlineUSers] = useState([]);
   //Dark mode css
   var dark = sessionStorage.getItem('darkmode');
   var paramData = useLocation().data;
 
 
-  window.addEventListener('beforeunload', (event) => {
-    event.returnValue = logoutFunction(setGoLogin);
-  });
+  // window.addEventListener('beforeunload', (event) => {
+  //   event.returnValue = logoutFunction(setGoLogin);
+  // });
 
   useEffect(() => {
     // Calls this request only once per render
@@ -43,6 +46,30 @@ function HomePage() {
         setCalendarInfo(res)
         console.log(res)
       })
+  }, []);
+
+  useEffect(() =>{
+    console.log('trying to connect...')
+    socket = io.connect('http://localhost:5000')
+    if(paramData !== undefined){
+      var title = paramData.title
+      var username = paramData.username
+      socket.emit('loggedin', {'username': username, 'title': title})
+    }
+
+    return () => {
+      socket.disconnect();
+      socket.off();
+    }
+      // socket.emit('joinCalendar', {'username': username, 'title': title})
+    
+
+  }, ['http://localhost:5000']);
+
+  useEffect(() =>{
+    socket.on('userUpdate', message =>{
+      setOnlineUSers(message.msg)
+    });
   }, []);
 
 
@@ -81,6 +108,8 @@ function HomePage() {
     }
   }
 
+
+  console.log(onlineUsers)
   return (
     <div className={dark === 'true'? 'dark-Home-container': "Home-container"}>
       {renderRedirect()}
@@ -101,7 +130,7 @@ function HomePage() {
           <Calendar/>
           </div>
           <div className="Social-container">
-          <Social key="social1" title={calendarInfo.name} count={calendarInfo.membercount} members={calendarInfo.members} online={calendarInfo.online} />
+          <Social key="social1" title={calendarInfo.name} count={calendarInfo.membercount} members={calendarInfo.members} online={calendarInfo.online} currentlyOnline={onlineUsers}/>
           </div>
         </div>
     </div>
