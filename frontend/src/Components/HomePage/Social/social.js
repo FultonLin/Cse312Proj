@@ -4,18 +4,18 @@ import OnlinePicture from './onlinePicture'
 import Chat from './Chat/chat'
 
 
-function Social({ title, count, members, online }) {
+function Social({ title, count, members, online, currentlyOnline }) {
 
   const renderJoinedsBubble = () => {
     var placeholder = [];
-    console.log(members);
-    console.log(online)
+    console.log(currentlyOnline)
+    console.log(members)
     for (const member in members) {
       var nameplaceholder = members[member];
       var status = 'offline';
-      for (const user in online) {
-        var userplaceholer = online[user];
-        if (nameplaceholder === userplaceholer) {
+      for(const user in currentlyOnline){
+        console.log(currentlyOnline[user].username)
+        if (nameplaceholder === currentlyOnline[user].username) {
           status = 'online';
         }
       }
