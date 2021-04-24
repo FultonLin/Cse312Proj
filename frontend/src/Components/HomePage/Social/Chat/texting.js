@@ -1,15 +1,35 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import './texting.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faArrowUp} from '@fortawesome/free-solid-svg-icons'
 
-function Texting() {
+function Texting({title,selectedUser,socket, username}) {
+
+    const[currentMessage, setCurrentMessage] = useState('')
+    const[chats, setChats] = useState([])
+
+    const handleMessageChange = (e) => {
+        setCurrentMessage(e.target.value)
+      }
+    
+    const sendMessage = () =>{
+        console.log('Sending...?')
+        socket.emit('sendMessage', {'username': username, 'title': title, 'sentTo': selectedUser, 'currentMessage': currentMessage})
+    }
+
+    useEffect(() =>{
+        if(socket !== undefined){
+
+            
+        }
+      }, []);
+
   return (
     <div className="Texting-inner-container">
         <div className="texting-input">
-            <input placeholder="Send message..." className="texting-input-inner"></input>
-            <button className="texting-button"><FontAwesomeIcon icon={faArrowUp}/></button>
+            <input placeholder="Send message..." className="texting-input-inner" onChange={e => handleMessageChange(e)}></input>
+            <button className="texting-button" onClick={() => sendMessage()}><FontAwesomeIcon icon={faArrowUp}/></button>
         </div>
         <div className="texting-convo">
         <div className="message">

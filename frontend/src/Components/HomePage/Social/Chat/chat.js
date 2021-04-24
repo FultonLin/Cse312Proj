@@ -3,25 +3,25 @@ import './chat.css'
 
 import Texting from './texting'
 
-function Chat({currentlyOnline, socket}) {
+function Chat({currentlyOnline, socket, title, username}) {
 
-  console.log(currentlyOnline)
+  const [selectedUser, setSelectedUser] = useState('Everyone');
+
+  const handleChange = (e) =>{
+    setSelectedUser(e.target.value)
+  }
 
   return (
     <div className="chat-container-inner">
         <p1 className="chat-header">Chat</p1>
-        <select className="dropdown">
-            <option>Everyone</option>
+        <select className="dropdown" onChange={(e) => handleChange(e)} >
+            <option value='Everyone'>Everyone</option>
             {currentlyOnline.map((user) => (
-              <option>{user.username}</option>
+              <option value={user.username}>{user.username}</option>
             ))}
-            {/* <option>Jordan</option>
-            <option>Christopher</option>
-            <option>Fulton</option>
-            <option>Simon</option> */}
         </select>
         <div className="texting-container">
-            <Texting/>
+            <Texting title={title} selectedUser={selectedUser} socket={socket} username={username}/>
         </div>
     </div>
   );

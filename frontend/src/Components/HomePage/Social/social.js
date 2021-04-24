@@ -4,7 +4,7 @@ import OnlinePicture from './onlinePicture'
 import Chat from './Chat/chat'
 
 
-function Social({ title, count, members, online, currentlyOnline, socket }) {
+function Social({ title, count, members, online, currentlyOnline, socket, username }) {
 
   const renderJoinedsBubble = () => {
     var placeholder = [];
@@ -36,7 +36,7 @@ function Social({ title, count, members, online, currentlyOnline, socket }) {
         </div>
       </div>
       <div className="chat-container">
-              <Chat currentlyOnline={currentlyOnline} socket={socket}/>
+              <Chat currentlyOnline={currentlyOnline} socket={socket} title={title} username={username}/>
       </div>
     </div>
   );

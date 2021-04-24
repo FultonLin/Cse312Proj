@@ -15,6 +15,12 @@ function HomePage() {
   const [goProfile, setGoProfile] = useState(false);
   const [goLogin, setGoLogin] = useState(false);
   const [onlineUsers, setOnlineUSers] = useState([]);
+  const [username, setUsername] = useState('');
+
+  //Handles chats
+  const[currentMessage, setCurrentMessage] = useState('')
+  const[chats, setChats] = useState([])
+
   //Dark mode css
   var dark = sessionStorage.getItem('darkmode');
   var paramData = useLocation().data;
@@ -54,6 +60,7 @@ function HomePage() {
     if(paramData !== undefined){
       var title = paramData.title
       var username = paramData.username
+      setUsername(username)
       socket.emit('loggedin', {'username': username, 'title': title})
     }
 
@@ -69,6 +76,14 @@ function HomePage() {
   useEffect(() =>{
     socket.on('userUpdate', message =>{
       setOnlineUSers(message.msg)
+    });
+
+    socket.on('recieveChats', message =>{
+      console.log(message)
+      });
+
+    socket.on('recievePrivateChats', message =>{
+        console.log(message)
     });
   }, []);
 
@@ -130,7 +145,7 @@ function HomePage() {
           <Calendar/>
           </div>
           <div className="Social-container">
-          <Social key="social1" title={calendarInfo.name} count={calendarInfo.membercount} members={calendarInfo.members} online={calendarInfo.online} currentlyOnline={onlineUsers} socket={socket}/>
+          <Social key="social1" title={calendarInfo.name} count={calendarInfo.membercount} members={calendarInfo.members} online={calendarInfo.online} currentlyOnline={onlineUsers} socket={socket} username={username}/>
           </div>
         </div>
     </div>
