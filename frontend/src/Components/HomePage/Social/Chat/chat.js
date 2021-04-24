@@ -1,18 +1,24 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './chat.css'
 
 import Texting from './texting'
 
-function Chat() {
+function Chat({currentlyOnline, socket}) {
+
+  console.log(currentlyOnline)
+
   return (
     <div className="chat-container-inner">
         <p1 className="chat-header">Chat</p1>
         <select className="dropdown">
             <option>Everyone</option>
-            <option>Jordan</option>
+            {currentlyOnline.map((user) => (
+              <option>{user.username}</option>
+            ))}
+            {/* <option>Jordan</option>
             <option>Christopher</option>
             <option>Fulton</option>
-            <option>Simon</option>
+            <option>Simon</option> */}
         </select>
         <div className="texting-container">
             <Texting/>

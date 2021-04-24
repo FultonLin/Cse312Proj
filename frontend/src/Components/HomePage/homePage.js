@@ -130,7 +130,7 @@ function HomePage() {
           <Calendar/>
           </div>
           <div className="Social-container">
-          <Social key="social1" title={calendarInfo.name} count={calendarInfo.membercount} members={calendarInfo.members} online={calendarInfo.online} currentlyOnline={onlineUsers}/>
+          <Social key="social1" title={calendarInfo.name} count={calendarInfo.membercount} members={calendarInfo.members} online={calendarInfo.online} currentlyOnline={onlineUsers} socket={socket}/>
           </div>
         </div>
     </div>
