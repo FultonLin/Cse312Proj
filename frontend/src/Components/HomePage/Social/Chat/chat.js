@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import './chat.css'
 
 import Texting from './texting'
 
-function Chat({currentlyOnline, socket, title, username}) {
+function Chat({members, currentlyOnline, socket, title, username, chats, privateChats}) {
 
   const [selectedUser, setSelectedUser] = useState('Everyone');
 
@@ -17,11 +17,14 @@ function Chat({currentlyOnline, socket, title, username}) {
         <select className="dropdown" onChange={(e) => handleChange(e)} >
             <option value='Everyone'>Everyone</option>
             {currentlyOnline.map((user) => (
+              user.title == title ?
               <option value={user.username}>{user.username}</option>
+              :
+              <div></div>
             ))}
         </select>
         <div className="texting-container">
-            <Texting title={title} selectedUser={selectedUser} socket={socket} username={username}/>
+            <Texting title={title} selectedUser={selectedUser} socket={socket} username={username} chats={chats} privateChats={privateChats}/>
         </div>
     </div>
   );

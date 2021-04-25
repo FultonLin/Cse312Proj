@@ -108,3 +108,8 @@
 .dropdown{
     margin-bottom: 1%;
 }
+
+.reverse{
+    display: flex;
+    flex-direction: column;
+}

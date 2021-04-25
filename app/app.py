@@ -293,9 +293,28 @@ def handleMssage(msg):
     msg['socketID'] = request.sid
     connectedUsers.append(msg)
     print(connectedUsers)
+    # -------------------------------------
+    retVal = []
+    retValSender = [] #For private chats
+    # Find who to send chat to
+    # If message was sent to everyone
+    for chat in chats:
+        if chat['title'] == msg['title'] and chat['sentTo'] == 'Everyone':
+            retVal.append(chat)
+        # Now, send the retva to everyone in that calendar
+    # Else if msg is sent to someone directly
+    else:
+        for chat in chats:
+            if chat['title'] == msg['title'] and chat['sentTo'] != 'Everyone' and (chat['username'] == msg['username'] or chat['sentTo'] == msg['username']):
+                retValSender.append(chat)
+        # Now, send the retva to everyone in that calendar
+        
+    # -------------------------------------
     for user in connectedUsers:
         if msg['title'] == user['title']:
-            emit('userUpdate', {'msg': connectedUsers}, room=user['socketID'])
+            emit('userUpdate', {'msg': connectedUsers, 'chats': retVal, 'privateChats': retValSender}, room=user['socketID'])
+    # Send chats too
+
 
 # Handles recieving a message
 @socketIO.on('sendMessage')
@@ -316,15 +335,15 @@ def recMessage(msg):
     # Else if msg is sent to someone directly
     else:
         for chat in chats:
-            if chat['title'] == msg['title'] and chat['sentTo'] == msg['sentTo']:
+            if chat['title'] == msg['title'] and chat['sentTo'] != 'Everyone' and (chat['sentTo'] == msg['sentTo'] or chat['username'] == msg['username']):
                 retVal.append(chat)
-            if chat['title'] == msg['title'] and chat['sentTo'] != 'Everyone' and chat['username'] == msg['username']:
+            if chat['title'] == msg['title'] and chat['sentTo'] != 'Everyone' and (chat['username'] == msg['username'] or chat['sentTo'] == msg['username']):
                 retValSender.append(chat)
         # Now, send the retva to everyone in that calendar
         for user in connectedUsers:
             if msg['sentTo'] == user['username']:
-                emit('recievePrivateChats', {'msg': retVal}, room=user['socketID'])
-            if msg['username'] == user['username']:
+                emit('recievePrivateChats', {'msg': retValSender}, room=user['socketID'])
+            elif msg['username'] == user['username']:
                 emit('recievePrivateChats', {'msg': retValSender}, room=user['socketID'])
     # emit('recieveChats', {'msg': chats})
 

@@ -18,8 +18,8 @@ function HomePage() {
   const [username, setUsername] = useState('');
 
   //Handles chats
-  const[currentMessage, setCurrentMessage] = useState('')
   const[chats, setChats] = useState([])
+  const[privateChats, setPrivateChats] = useState([])
 
   //Dark mode css
   var dark = sessionStorage.getItem('darkmode');
@@ -37,7 +37,6 @@ function HomePage() {
       'token': token,
       paramData,
     }
-    console.log(window.location.pathname)
     fetch('/app/home', {
       method: 'post',
       headers: {
@@ -55,7 +54,6 @@ function HomePage() {
   }, []);
 
   useEffect(() =>{
-    console.log('trying to connect...')
     socket = io.connect('http://localhost:5000')
     if(paramData !== undefined){
       var title = paramData.title
@@ -76,14 +74,20 @@ function HomePage() {
   useEffect(() =>{
     socket.on('userUpdate', message =>{
       setOnlineUSers(message.msg)
+      if(message.chats !== undefined){
+        setChats(message.chats)
+      }
+      if(message.privateChats !== undefined){
+        setPrivateChats(message.privateChats)
+      }
     });
 
     socket.on('recieveChats', message =>{
-      console.log(message)
+      setChats(message.msg)
       });
 
     socket.on('recievePrivateChats', message =>{
-        console.log(message)
+      setPrivateChats(message.msg)
     });
   }, []);
 
@@ -124,7 +128,6 @@ function HomePage() {
   }
 
 
-  console.log(onlineUsers)
   return (
     <div className={dark === 'true'? 'dark-Home-container': "Home-container"}>
       {renderRedirect()}
@@ -145,7 +148,7 @@ function HomePage() {
           <Calendar/>
           </div>
           <div className="Social-container">
-          <Social key="social1" title={calendarInfo.name} count={calendarInfo.membercount} members={calendarInfo.members} online={calendarInfo.online} currentlyOnline={onlineUsers} socket={socket} username={username}/>
+          <Social key="social1" title={calendarInfo.name} count={calendarInfo.membercount} members={calendarInfo.members} online={calendarInfo.online} currentlyOnline={onlineUsers} socket={socket} username={username} chats={chats} privateChats={privateChats}/>
           </div>
         </div>
     </div>
