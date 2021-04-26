@@ -27,3 +27,15 @@
     align-items: center;
     color: white;
 }
+
+.pfp-container{
+    display: flex;
+    align-items: center;
+}
+
+.profile-picture{
+    width: 3vw;
+    opacity: .6;
+    margin-left: 21%;
+    margin-top: 12%;
+}

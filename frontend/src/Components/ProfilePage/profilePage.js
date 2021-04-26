@@ -7,6 +7,7 @@ import './profilePage.css';
 import ProfilePull from './profileFunction';
 import DarkModeFunction from './darkmodeFunction';
 import logoutFunction from '../Logout/logoutFunction'
+import defaultProfile from '../../Images/default-profile.png'
 
 function ProfilePage() {
 
@@ -58,6 +59,22 @@ function ProfilePage() {
       DarkModeFunction(darkMode)
   }
 
+ 
+
+  function profilePicture() {
+
+    const renderPFP = () => {
+      return (<img src={defaultProfile} className="profile-picture" alt="Profile avatar" />)
+    }
+
+    return (
+      <div className="pfp">
+        {renderPFP()}
+      </div>
+    );
+  
+  }
+
   console.log(dark === true)
   return (
     <div className={dark === 'true' ? "dark-Login-Container" : "Login-Container"}>
@@ -85,8 +102,9 @@ function ProfilePage() {
                 <h1 className="profilePage-subtitle">Dark mode:</h1>
                 <input type="checkbox" className="darkmode-checkbox" onClick={() => triggerDarkCall()} checked={darkMode}/>
             </div>
-            <div className="pfp-subcontainer">
-                <h1 className="profilePage-subtitle">Your profile picture:</h1>
+            <div className="pfp-container">
+                <h1 className="profilePage-subtitle">Your profile picture: </h1>
+                  {profilePicture()}
             </div>
           </div>
         </div>
