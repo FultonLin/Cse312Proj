@@ -85,6 +85,9 @@ function ProfilePage() {
                 <h1 className="profilePage-subtitle">Dark mode:</h1>
                 <input type="checkbox" className="darkmode-checkbox" onClick={() => triggerDarkCall()} checked={darkMode}/>
             </div>
+            <div className="pfp-subcontainer">
+                <h1 className="profilePage-subtitle">Your profile picture:</h1>
+            </div>
           </div>
         </div>
       </div>
