@@ -34,8 +34,20 @@
 }
 
 .profile-picture{
-    width: 3vw;
+    width: 5vw;
     opacity: .6;
-    margin-left: 21%;
-    margin-top: 12%;
+    margin-left: 12%;
+    margin-top: 5%;
+}
+
+.newpfp-container{
+    display: flex;
+    align-items: center;
+}
+
+.pfp-upload{
+    margin-left: 2%;
+    margin-top: 4%;
+    width: 40px;
+    height: 40px;
 }

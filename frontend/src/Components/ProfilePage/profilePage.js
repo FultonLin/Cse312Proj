@@ -75,6 +75,10 @@ function ProfilePage() {
   
   }
 
+  const submitImage = () =>{
+    document.getElementsByName("image-form")[0].submit();
+  }
+
   console.log(dark === true)
   return (
     <div className={dark === 'true' ? "dark-Login-Container" : "Login-Container"}>
@@ -89,23 +93,33 @@ function ProfilePage() {
         </div>
         <div className="Login-Bubble">
           <div className="Login-Text">
-            <h>Profile</h>
+            <nobr>
             <div className="profile-subcontainer">
-                <h1 className="profilePage-subtitle">Your username:</h1>
-                <h>{username}</h>
+                <h1 className="profilePage-subtitle">Your username: {username}</h1>
             </div>
+            </nobr>
+            <nobr>
             <div className="profile-subcontainer">
-                <h1 className="profilePage-subtitle">Your email:</h1>
-                <h>{email}</h>
+                <h1 className="profilePage-subtitle">Your email: {email}</h1>
             </div>
+            </nobr>
             <div className="darkmode-container">
                 <h1 className="profilePage-subtitle">Dark mode:</h1>
                 <input type="checkbox" className="darkmode-checkbox" onClick={() => triggerDarkCall()} checked={darkMode}/>
             </div>
             <div className="pfp-container">
-                <h1 className="profilePage-subtitle">Your profile picture: </h1>
+                <h1 className="profilePage-subtitle"><nobr>Your profile picture: </nobr></h1>
                   {profilePicture()}
             </div>
+            <nobr>
+            <div className="newpfp-container">
+                <h1 className="profilePage-subtitle">Upload new picture: </h1>
+                  <form action="/app/profile" className="pfp-upload" id="image-form" method="post" enctype="multipart/form-data">
+                    <input id="form-file" type="file" name="upload"></input>
+                    <input type="submit" value="Submit"></input>
+                  </form>
+            </div>
+            </nobr>
           </div>
         </div>
       </div>
