@@ -1,0 +1,39 @@
+a.) What does this technology accomplish?
+This library allows the Dm and live chat between users feature to work. This
+library establishes a websocket connection to the client as learned in class and uses
+this websocket connection to send and recieve messages to and from the client. Using this library, it does all the nessecary handshake
+and tedious byte parsing that we were required to do in the homework.
+
+b.) How does this technology accomplish what it does?
+Flask socket io doesn't have many files, instead it has three huge files where most of the work is done.
+First, we'll look at __init__.py (https://github.com/miguelgrinberg/Flask-SocketIO/blob/master/flask_socketio/__init__.py).
+So starting with the __init__ function, we will eventually call the init_app function when are given the flask app as the parameter.
+From the init_app function, we eventually (line 245) call the Server function of socketio, socketio.Server(**self.server_options). This function will handle creating the server.
+It is a different library so we must now reference a different link, (https://github.com/miguelgrinberg/python-socketio/blob/master/socketio/server.py).
+We are creating an instantation of the Server class in socketio, so we are in the server.py file, starting at the init function, line 101. Within this function,
+we see self.eio = self._engineio_server_class()(**engineio_options), this is leads us to the function, def _engineio_server_class, which returns an engenio.Server.
+This return is an instantion of the Server Object in the engenio library which, again. is a different library (https://github.com/miguelgrinberg/python-engineio).
+This is located in server.py of Engineio. Within the init for this file we see import_module('engineio.aync_drivers'). In the directory of this library,
+we see a folder of async_drivers. Of which is tornado.py. We see this file called in init.py of Engineio at line 11, from .async_drovers.tornado import get_tornado_handler.
+This leads us to the tornado.py file. In this function, get_tornado_handler, we see tornado.websocket.WebSocketHandler (line 11). Following this, we
+go to yet another library, (https://github.com/tornadoweb/tornado). Following this call, we are taken to websocket.py in the tornado library.
+This is the library that handles the handshake of the websocket. When the client sends to upgrade the connection we see the def_handle_1xx (line 819) handles this. 
+It asserts that 'Upgrade: websocket' are in the headers, if so, we continue and call .compute_accept_value. This function appends '258EAFA5-E914-47DA-95CA-C5AB0DC85B11'
+to the key in the header and the sha1 hash is done with sha1.hashlib.sha1() and then is hashed updated after appending the GUID with sha1.update(b"258EAFA5-E914-47DA-95CA-C5AB0DC85B11").
+Prior to this, of course, the client should send a get request to updgrade the connection to websocket in the first place. We see this in
+def _execute function (line 114). In this function, it ensures that the request method is GET and that the header has Upgrade: websocket in it (line 126).
+If not, we send a 400 Bad Request Connection must be upgrade. We then call ws_connection.accept_connection(). In the self.stream.write function is where we write the 
+is where we respond with a 101 header with the appropriate websocket headers. Reading a message is then done with the _recieve_message function after determining the frame
+type. Sending a message is then done with write_message function. This is broken down into the _write_frame function (line 580), where we see
+all the bit parsing we learned in class. Here we have a paramter as the opcode and determine the finbit. We find the length of our data and determine
+if it is above or below 126. If below, (line 592), we add to frame struct.pack("B", 1 | mask_bit), if, less then 65536, we add to frame struct.pack("!BH", 126 | mask_bit, 1),
+if else, we add to frame struct.pack("!BQ", 127 | mask_bit, 1). After all this we add to the frame our original data then call the previously mentioned write function.
+From the research done, it seems flask_socketio serves as a middleman to connect flask to socketio and socketio serves as a middle man to engineio which uses 
+tornado's websockets and the functions within these websockets to handle the connection and recieve and send messages are in websocket.py of this library.
+
+c.) What license(s) or terms of service apply to this technology?
+flask_socketio is licensed under MIT. It is open source and the user is allowed to modify it
+free of charge.
+
+
+

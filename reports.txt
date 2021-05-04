@@ -65,14 +65,3 @@ actually stored in the hash itself. So when comparing if a password matches a ha
 to the password you are trying to verify.
 c.) What license(s) or terms of service apply to this technology?
 Bcrypt is licensed under an Apache license. This grants people general commerical use of the product along with their own modification.
-
-JWT: 
-a.) What does this technology accomplish?
-This library allows us to create unique tokens to send to our frontend and database to verify a login session. It is much easier
-than manually creating our unique token that can't be guessed by anyone.
-b.) How does this technology accomplish what it does?
-When creating a JWT an alogorithm is needed. In our case, HS256. This means the token will be signed with SHA256. First the token is encoded
-with the base 64 encoding system. This is not secure enough of course and then our paremeter alogorithm, HS256, is used to apply and encode the 
-token even further.
-c.) What license(s) or terms of service apply to this technology?
-JWT is licesned under the MIT license and allows for standard commerical use and modification.
