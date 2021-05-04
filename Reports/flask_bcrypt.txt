@@ -1,0 +1,35 @@
+a.) What does this technology accomplish?
+flask_bycrypt is a super useful library in our webapp. It takes on the work of salting and hashing strings
+for security. For our project, we salt and hash both passwords as well as authentication tokens. Verifying if a password or token
+matches the hashed token or password would be difficult but this library does it for us too.
+
+b.) How does this technology accomplish what it does?
+Repo link: https://github.com/maxcountryman/flask-bcrypt . Bcrypt is not a hugely complex library. Firstly we see that installing this
+library also installs the regular python bcrypt library (https://github.com/pyca/bcrypt/actions?query=workflow%3ACI+branch%3Amaster).
+This is because flask-bcrypy just serves as the middle man between the encryption and flask. Our first function call we make in our
+webapp is generate_password_hash and this simply hashes the password with bycrpts encryption method. We can follow this method back to
+flask_bycrypt.py line 136. Here we set the rounds variable to the default value which is 12. Then we utf-8 encode the password into bytes 
+like we learned in class at line 158. We then return the value of bcrypt.hashpw(password, bcrypt.gensalt(rounds)). So, generate_password_hash,
+simply encode our password and gives a parameter, rounds, to use as the salt. We now must follow the gensalt function and then the hashpw function.
+The gensalt function is found in __init__.py of the bcrypt library line 57. From here, we create a salt with os.urandom(16). This function returns a 
+string of random bytes of length 16. We then base 64 encode the salt and return this appended to a prefix of byte 2b. The purpose of the prefix is
+for bycrpt to know this is a salt later on. Since now we have the genSalt that is used in the paramater of the hashpw function mentioned earlier,
+we can now follow this function. Hashpw is found on line 78 in __init__.py in bcrypt. This function serves to hash the password which is now encoded
+with the salt that we generated previously. First, this function makes sure the password is encoded and not null or else raises TypeError or ValueError.
+Then, we hashpass call with the salt and encoded password with a function from the _bcrypt.pyd file found in the library. This file is a binary python file
+which I've been unsuccesful in properly opening. The return of this is checked to see if the salt is valid or not, if not 0 then it is. Then,
+we return the first bytes up until the last 4 of the salt appended with the hashed encoded password after the first 4 bytes (line 113). 
+This is everything that occurs when we call generate_password_hash in our backend.
+
+Bcrypt is used in other ways in our backend as well. We use the function, bcrypt.check_password_hash, in our backend to verify if an inputted password/token
+is equal to the bcrypt encrypted value we have saved in our backend. We will now follow this function to determine how it works. check_password_hash
+is defined on line 165 in flask_bycrypt.py. The if statements within this function just serve to encode the parameters of the function if they are not.
+Then this function returns safe_str_cmp(bcrypt.hashpw(password,pw_hash), pw_hash). We have already gone over how the hashpw functions works above
+so we will dive into the safe_str_cmp function works. This function is fairly simple. It is defined within security.py in the werkzeug library. This function
+makes sure the two parameters are encoded if so returns false if they are not the same length (line 107) and if they are the same length, will iterate
+through the encodings and return false if they weren't equal and true if they were. Upon further research we discovered the reason for this method. It prevents
+a 'timed' attack. This functin runs in constant time because it will run through the entire encoding of the string regardless if it is already known if the encodings
+are equal or not so an attacker cannot use the difference in times the function can take to return.
+
+c.) What license(s) or terms of service apply to this technology?
+Bcrypt is licensed under an Apache license. This grants people general commerical use of the product along with their own modification.
