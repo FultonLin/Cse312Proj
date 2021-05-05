@@ -8,18 +8,25 @@ import ProfilePull from './profileFunction';
 import DarkModeFunction from './darkmodeFunction';
 import logoutFunction from '../Logout/logoutFunction'
 import defaultProfile from '../../Images/default-profile.png'
+import pfpUpdate from './pfpFunction'
 
 function ProfilePage() {
 
+  
   const [goHome, setGoHome] = useState(false);
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('')
+  const [pfp, setPfp] = useState('')
   const [darkMode, setDarkMode] = useState(false)
   const [goLogin, setGoLogin] = useState(false);
 
   //Dark mode css
   var dark = sessionStorage.getItem('darkmode')
+
+  const handlePfpChange = (e) => {//set username when inputed
+    setPfp(e.target.value)
+  }
 
   useEffect(() => {
     // Calls this request only once per render
@@ -75,9 +82,6 @@ function ProfilePage() {
   
   }
 
-  const submitImage = () =>{
-    document.getElementsByName("image-form")[0].submit();
-  }
 
   console.log(dark === true)
   return (
@@ -93,16 +97,15 @@ function ProfilePage() {
         </div>
         <div className="Login-Bubble">
           <div className="Login-Text">
-            <nobr>
+            <h>Profile</h>
             <div className="profile-subcontainer">
-                <h1 className="profilePage-subtitle">Your username: {username}</h1>
+                <h1 className="profilePage-subtitle">Your username:</h1>
+                <h>{username}</h>
             </div>
-            </nobr>
-            <nobr>
             <div className="profile-subcontainer">
-                <h1 className="profilePage-subtitle">Your email: {email}</h1>
+                <h1 className="profilePage-subtitle">Your email:</h1>
+                <h>{email}</h>
             </div>
-            </nobr>
             <div className="darkmode-container">
                 <h1 className="profilePage-subtitle">Dark mode:</h1>
                 <input type="checkbox" className="darkmode-checkbox" onClick={() => triggerDarkCall()} checked={darkMode}/>
@@ -115,8 +118,10 @@ function ProfilePage() {
             <div className="newpfp-container">
                 <h1 className="profilePage-subtitle">Upload new picture: </h1>
                   <form action="/app/profile" className="pfp-upload" id="image-form" method="post" enctype="multipart/form-data">
-                    <input id="form-file" type="file" name="upload"></input>
-                    <input type="submit" value="Submit"></input>
+                    <input id="form-file" type="file" name="upload">onChange={handlePfpChange} value={pfp}</input>
+                    <div className="upload-button" onClick={() => pfpUpdate(pfp, setPfp)}>Upload
+                      <input type="submit" value="Submit"></input>  
+                    </div>
                   </form>
             </div>
             </nobr>
