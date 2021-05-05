@@ -1,0 +1,41 @@
+.social-container{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.changing-button{
+    background-color: rgb(0, 0, 0,.5);
+    border-radius: 20px;
+    width: fit-content;
+}
+
+.changing-button:hover{
+    background-color: rgba(194, 191, 191, 0.5);
+}
+
+.current-date{
+    font-style: bold;
+    font-size: 1vw;
+    margin-left: 2vw;
+}
+
+.dateinfobox{
+    margin-top: 2.5%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    border-radius: 20px;
+    background-color: #f7c3c3;
+    border-style: solid;
+    border-width: .5px;
+}
+
+.input-day{
+    width: 90%;
+}
+
+.date-input-box{
+    margin-left: auto;
+    margin-right: auto;
+}

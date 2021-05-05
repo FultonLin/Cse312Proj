@@ -1,13 +1,12 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import './calendarStyle.css'
 import moment from 'moment'
-
 import createCalendar from './createCalendar'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
-function Calendar() {
+function Calendar({ title, socket, username }) {
 
   const [value, setValue] = useState(moment());
   const [calendar, setCalendar] = useState([]);
@@ -17,14 +16,15 @@ function Calendar() {
 
   //Dark mode css
   var dark = sessionStorage.getItem('darkmode')
-  
-  useEffect(() =>{
+
+  useEffect(() => {
     setCalendar(createCalendar(value));
   }, [value])
 
-  const clickDay = (day) =>{
-    if (!firstDay.isAfter(day) && !lastDay.isBefore(day)){
-      setClickedDay(day)
+  const clickDay = (day) => {
+    if (!firstDay.isAfter(day) && !lastDay.isBefore(day)) {
+      socket.emit('clickedDayChange', { 'username': username, 'title': title, 'changingDate': day.format('MM-DD-YYYY') });
+      setClickedDay(day);
     }
   }
 
@@ -39,21 +39,22 @@ function Calendar() {
   return (
     <div className="calendar-box">
       <div className={dark === 'true' ? 'dark-month-selector' : "month-selector"}>
-        <FontAwesomeIcon icon={faChevronLeft} onClick={() =>prevMonth()}/>
+        <FontAwesomeIcon icon={faChevronLeft} onClick={() => prevMonth()} />
         {value.format("MMMM")}&nbsp;&nbsp;{value.format("YYYY")}
-        <FontAwesomeIcon icon={faChevronRight} onClick={() =>nextMonth()}/>
+        <FontAwesomeIcon icon={faChevronRight} onClick={() => nextMonth()} />
       </div>
-       {calendar.map((week) => (
-         <div>
-           {week.map((day) => (
-             <div className={!firstDay.isAfter(day) && !lastDay.isBefore(day) && dark ==='true'? "dark-day": 
-             !firstDay.isAfter(day) && !lastDay.isBefore(day) ? 'day': dark==='true' ? 'dark-diffMonthDay': 'diffMonthDay'} onClick={() => clickDay(day)}>
-               <div className={clickedDay.isSame(day, "day") && value.format('M') === day.format('M') ? "selected": ""}>
-               {day.format("D")}</div>
-               </div>
-           ))}
-         </div>
-       ))}
+      {calendar.map((week) => (
+        <div>
+          {week.map((day) => (
+            <div className={!firstDay.isAfter(day) && !lastDay.isBefore(day) && dark === 'true' ? "dark-day" :
+              !firstDay.isAfter(day) && !lastDay.isBefore(day) ? 'day' : dark === 'true' ? 'dark-diffMonthDay' : 'diffMonthDay'} onClick={() => clickDay(day)}>
+              <div className={clickedDay.isSame(day, "day") && value.format('M') === day.format('M') ? "selected" : ""}>
+                <div>{day.format('D')}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }

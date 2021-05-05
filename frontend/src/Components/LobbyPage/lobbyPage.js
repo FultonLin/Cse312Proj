@@ -18,15 +18,15 @@ function LobbyPage() {
 
   //Dark mode css
   var dark = sessionStorage.getItem('darkmode')
-  
+
 
   useEffect(() => {
     // Calls this request only once per render
     var token = sessionStorage.getItem("token")
     let data = {
-        'token' : token,
-      }
-    fetch('/app/lobby',{
+      'token': token,
+    }
+    fetch('/app/lobby', {
       method: 'post',
       headers: {
         'Content-type': 'application/json',
@@ -36,71 +36,69 @@ function LobbyPage() {
     })
       .then(response => response.text())
       .then(data => {
-          var res = JSON.parse(data)
-          if(res.msg !== "zero"){
-            console.log(res)
-            setJoined(res)
-              console.log("here")
-              var token = sessionStorage.getItem("token")
-                let data = {
-                    'token' : token,
-                  }
-                fetch('/app/profile',{
-                  method: 'post',
-                  headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json'
-                  },
-                  body: JSON.stringify(data)
-                })
-                  .then(response => response.text())
-                  .then(data => {
-                      var res = JSON.parse(data)
-                      setUsername(res[0])
-                      setrenderjoined(true)
-                  })
-          
+        var res = JSON.parse(data)
+        if (res.msg !== "zero") {
+          console.log(res)
+          setJoined(res)
+          console.log("here")
+          var token = sessionStorage.getItem("token")
+          let data = {
+            'token': token,
           }
-
+          fetch('/app/profile', {
+            method: 'post',
+            headers: {
+              'Content-type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+            .then(response => response.text())
+            .then(data => {
+              var res = JSON.parse(data)
+              setUsername(res[0])
+              setrenderjoined(true)
+            })
+        }
       })
   }, []);
 
-  const renderRedirect = () =>{       //If no token, sends user back to login
+  const renderRedirect = () => {       //If no token, sends user back to login
     var token = sessionStorage.getItem("token")
-    if(token === null){
-      return(
-        <Redirect to ="/login"/>
+    if (token === null) {
+      return (
+        <Redirect to="/login" />
       )
     }
   }
 
-  const renderJoinedsBubble = () =>{
-    if(joined !== undefined && renderjoined === true){
+  const renderJoinedsBubble = () => {
+    if (joined !== undefined && renderjoined === true) {
       var placeholder = [];
       console.log(joined)
-      for(var i = 0; i < joined.length;i++){
+      for (var i = 0; i < joined.length; i++) {
         var nameplaceholder = joined[i].name;
         var calendarnumber = joined[i].membercount;
-        var uniqueId = "uniqueId" + i
-        placeholder.push(<CalendarBubble key={uniqueId} title={nameplaceholder} number={calendarnumber} username={username}/>);
+        var uniqueId = "uniqueId" + i;
+        placeholder.push(<CalendarBubble key={uniqueId} title={nameplaceholder} number={calendarnumber} username={username} />);
       }
       return (placeholder)
     }
   }
 
   //Goes to profile page
-  const redirectProfile = () =>{
-    if(goProfile){
-      return(
-        <Redirect to="/profile"/>
+  const redirectProfile = () => {
+    if (goProfile) {
+      return (
+        <Redirect to="/profile" />
       )
     }
   }
 
   //Goes to create calendar page
-  const redirectCreate = () =>{
-    if(goCreate){
-      return(
+  const redirectCreate = () => {
+    if (goCreate) {
+      return (
         <Redirect to="/calendar/create" />
       )
     }
@@ -133,10 +131,10 @@ function LobbyPage() {
       {redirectJoin()}
       {redirectLogin()}
       <div className="Lobby-headers">
-        <h1 className={dark === 'true' ? "dark-Lobby-title": "Lobby-title"}>Calendarify.</h1>
+        <h1 className={dark === 'true' ? "dark-Lobby-title" : "Lobby-title"}>Calendarify.</h1>
         <div className="Nav-buttons">
-        <div className="Lobby-profile" onClick={() => logoutFunction(setGoLogin)}><FontAwesomeIcon icon={faSignOutAlt} size="2x" /></div>
-          <div className="Lobby-profile" onClick={() => setGoProfile(true)}><FontAwesomeIcon icon={faUser} size="2x"/></div>
+          <div className="Lobby-profile" onClick={() => logoutFunction(setGoLogin)}><FontAwesomeIcon icon={faSignOutAlt} size="2x" /></div>
+          <div className="Lobby-profile" onClick={() => setGoProfile(true)}><FontAwesomeIcon icon={faUser} size="2x" /></div>
         </div>
       </div>
       <div className="Lobby-center-container">

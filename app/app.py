@@ -125,8 +125,6 @@ def logout():
         hashedToken = user.get('token')
         if(bcrypt.check_password_hash(hashedToken, token)):
             if loggedIn != None and token in loggedIn:
-                print("======================================",flush=True)
-                print(loggedIn,flush=True)
                 loggedIn.remove(token)
     msg = {"msg":"good"}
     return jsonify(msg),200
@@ -281,6 +279,8 @@ def calendarload():
 # Holds all connected (users, socketID) and their calendar they're currently connected to
 connectedUsers = []
 chats = []
+dateStatus = []
+selectedDate = []
 
 @socketIO.on('connect')
 def test_connect():
@@ -289,13 +289,15 @@ def test_connect():
 
 @socketIO.on("loggedin")
 def handleMssage(msg):
-    print("HEREEEEE")
+    print("=============================",flush=True)
     msg['socketID'] = request.sid
     connectedUsers.append(msg)
     print(connectedUsers)
+    print(msg,flush=True)
     # -------------------------------------
     retVal = []
     retValSender = [] #For private chats
+    retDate = [] #for date info
     # Find who to send chat to
     # If message was sent to everyone
     for chat in chats:
@@ -308,13 +310,51 @@ def handleMssage(msg):
             if chat['title'] == msg['title'] and chat['sentTo'] != 'Everyone' and (chat['username'] == msg['username'] or chat['sentTo'] == msg['username']):
                 retValSender.append(chat)
         # Now, send the retva to everyone in that calendar
-        
+    
+    # Check calendar if correct send the info for that calendar
+    for dateInfo in dateStatus:
+        if dateInfo['title'] == msg['title']:
+            retDate.append(dateInfo)
+
     # -------------------------------------
     for user in connectedUsers:
         if msg['title'] == user['title']:
-            emit('userUpdate', {'msg': connectedUsers, 'chats': retVal, 'privateChats': retValSender}, room=user['socketID'])
+            emit('userUpdate', {'msg': connectedUsers, 'chats': retVal, 'privateChats': retValSender, 'dated' : retDate, 'changingDate':msg['changingDate']}, room=user['socketID'])
     # Send chats too
 
+# Handles delete on day
+@socketIO.on('deleteDay')
+def recDayStatus(msg):
+    for sent in range(len(dateStatus)):
+        dateStatusPlaceholder = dateStatus[sent]
+        if msg['changingDate'] == dateStatusPlaceholder['changingDate']:
+            dateStatus.remove(dateStatus[sent])
+    for user in connectedUsers:
+        emit('receiveDeleteData', {'msg': dateStatus}, room=user['socketID'])
+
+# Handles status on day
+@socketIO.on('sendDay')
+def recDayStatus(msg):
+    found = False
+    for sent in range(len(dateStatus)):
+        dateStatusPlaceholder = dateStatus[sent]
+        print(dateStatusPlaceholder,flush=True)
+        if msg['changingDate'] == dateStatusPlaceholder['changingDate'] and 'currentMessage' in msg.keys():
+            found = True
+            dateStatus[sent] = msg
+    if found == False and 'currentMessage' in msg.keys():
+        dateStatus.append(msg)
+    for user in connectedUsers:
+        emit('receiveDateData', {'msg': dateStatus}, room=user['socketID'])
+
+# Handles status on day
+@socketIO.on('clickedDayChange')
+def recDayChange(msg):
+    for user in connectedUsers:
+        if user['username'] == msg['username']:
+            print("==================================",flush=True)
+            print(msg['changingDate'],flush=True)
+            emit('receiveDateChange', {'msg': msg['changingDate']}, room=user['socketID'])
 
 # Handles recieving a message
 @socketIO.on('sendMessage')
