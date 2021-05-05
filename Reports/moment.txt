@@ -1,0 +1,39 @@
+a.) What does this technology accomplish?
+Moment is used in our case to get the current date and the date system entirely. Dates can be found out manually 
+but allowing MomentJS to figure it out for us is much, much easier. Parsing data is as simple as a function call.
+
+b.) How does this technology accomplish what it does?
+Repo: https://github.com/moment/moment
+The first thing we do with moment is create an instantation of it with moment(). We can follow this call back to the file constructor.js line
+256. In this, we create a new Date object and get the current time with a getTime() call.
+
+In our frontend we then call a .clome() on our Moment object. We will now follow this function to see what it does. This function call
+can be found in the moment library in the file clone.js. The function is very simple as all it does is return a new Moment object which
+was explained above.
+
+Our frontend then calls a .startOf("month") on this cloned object. We will follow this function to see what it does. This function is defined
+in the start-end-of.js file in moment at line 34. The parameter we passed is sent into a switch statement to determine what unit is requested.
+In this case, it will stop at case 'month' at line 54. From here, it will call the function utcStartOfDate with the parameters of (this.year(), this.month(), 1).
+We will now follow this function to see what it does. This function is defined at line 24 of the same file. It simply returns the Date.UTC of our
+parameters and adjustments for the leap year.
+
+Our next function we use is .endOf("month") which is essentially the same as startOf which was explained prior. We will discuss it breifly. This function
+is defined in start-end-of.js at line 97. It breaks at the switch statement for the case : 'month' and calls the same utcStartOfDate but Moment
+uses different parameters to ensure we recieve the end date of the month. To do this they use the parameter this.month() + 1 and then after that they subtract one.
+They are getting the start date of the month ahead of the date we are requesting and subtracting one to return the end date of the previous month.
+
+The next functions we use are isAfter and isBefore. These functions simply return a boolean value true if the the two dates are before or after.
+These functions are defined in the compare.js file at lines 5(isAfter) and 18(isBefore). These funtions are essentially the same so we will just look at 
+isAfter. The first lines of thi function are used to ensure the dates are valid dates. If not, it returns false. Next, it just calls a valueOf on both
+date parameters and returns true if 'this' is greater (after) the parameter named input and false otherwise.
+
+Next, we use the .add(1, "month") and .subtract(1, "month"). These functions are essentially the same so we'll just look into the add function. This 
+function is defined in add-subtract.js at line 14. All it does is call another function, addSubtract with the parameters(this, input, value, 1). We will
+now follow this addSubtract function. This function is defined in the same file at line 3. This function creats an object Duration which is defined 
+in the create.js file of Moment at line 18. From this, we are given the number of ms, days, and months and we add our '1' parameter to this which indicated 
+add. If we did .subtract this would be a -1. 
+
+c.) What license(s) or terms of service apply to this technology?
+MomentJS was created by the JS foundation and is licensed under MIT. It is open source and the user is allowed to modify it
+free of charge.
+
