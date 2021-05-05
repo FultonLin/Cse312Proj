@@ -32,7 +32,8 @@
 }
 
 .input-day{
-    width: 90%;
+    resize: none;
+    width: 80%;
 }
 
 .date-input-box{

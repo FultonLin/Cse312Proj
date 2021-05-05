@@ -34,7 +34,7 @@ function DateFocus({ title, socket, username, dated, clickedDayChange }) {
         <div className="current-date">{clickedDayChange.format('MM-DD-YYYY')}</div>
       </div>
       <div className="date-input-box">
-        <input className="input-day" placeholder="Change Day" onChange={e => handleMessageChange(e)} value={currentMessage}></input><br />
+        <textarea rows="5" className="input-day" placeholder="Change Day" onChange={e => handleMessageChange(e)} value={currentMessage}></textarea><br />
         <button className="changing-button" onClick={() => sendMessage()}>Change Date</button>
         <button className="changing-button" onClick={() => sendDelete()}>Clear Date</button>
       </div>

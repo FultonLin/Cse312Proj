@@ -103,10 +103,6 @@ function HomePage() {
 
     socket.on('receiveDateChange', message => {
       setClickedDayChange(moment(message.msg))
-      console.log("+++++++++++++++++++++++++++++++++")
-      console.log(moment(message.msg).format('MM-DD-YYYY'))
-      console.log("=====================================")
-      console.log(clickedDayChange.format('MM-DD-YYYY'))
     });
 
     socket.on('receiveDeleteData', message => {

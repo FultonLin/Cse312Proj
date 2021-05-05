@@ -257,8 +257,13 @@ def darkmode():
 @app.route('/app/home', methods=['POST'])
 def calendarload():
     data = request.get_json(force=True)
-    token = data.get('token',None)
-    title = data.get('paramData',None).get('title',None)
+    print(data,flush=True)
+    token = data.get('token')
+    if (data.get('paramData') != None):
+        title = data.get('paramData').get('title')
+    else:
+        msg = {"msg": "zero"}
+        return jsonify(msg), 200
     account = ''
     usersArr = users.find({})
     currentlyLogged = []
