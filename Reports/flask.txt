@@ -1,0 +1,31 @@
+a.) What does this technology accomplish?
+FLask is a WSGI micro-framework that allows us to use tools that we need if we need them.
+We use it to connect frontend to backend and it handles connections that is sent from react.
+It handles connections between database and the front end. It handles our different POST and GET requests without
+us having to parse between the data as we did in the homeworks.
+
+b.) How does this technology accomplish what it does?
+The first time we use Flask in our project is to simply create an instantation of Flask with the parameters, (__name, static_folder='../app/build', static_url_path='/').
+We find this function in the libary at line 415 of app.py. We init with the same parameters here. This function is defined in line 975 of helpers.py. Back to app.py, we see
+we add the static URL path that we initially provided in our backend. Sending images from flask is a defined function as well. In helpers.py line 469 there is a function
+defined as send_file. In this function, we can pass a MIMETYPE as a parameter and given this we add it to the headers at line 598 as well as add 'Content-Disposition' 
+at line 618. This function also ensures the image is properly encoded and raises a warning if otherwise. This function also determines the 'Content-Length' of the file
+just how we did in class at line 625. To get the filesize and they call the function os.path.getsize(filename) which returns the size in bytes and then this is
+appended to the headers. More importantly, how does flask actually make its initial connection? This is found in app.py of the Flask library. Remember, in our DockerFile for 
+app.py we use 'flask run' command with the host and port as parameters. (CMD [ "flask", "run", "--host", "0.0.0.0" ]). This is found at line 889 of app.py 
+for the function run. Here is where we actually make the initial connection. Within this function we call run_simple with the host and port as parameters.
+This function is actually from a different library so we can see this initial connection is not explicitly handled by Flask. We will follow this run_simple function to see how it
+makes the connection. This function is defined in the file serving.py of the werkzeug library. By calling flask run we are running in debug mode and not production mode 
+so from this run_simple function, we call the DebuggedApplication function. Let's follow this function. And this is where the connection starts. We can see error handling here too.
+If the connection doesn't work we call a 500 error with the correct content type of text/html and utf-8 charset at line 325. Now what we have covered how file handling and the 
+initial connection work, we will discuss how the pathing works. Throughout our backend you can see we define routes with some associated function and return value. This route function is
+defined in app.py of the flask library at line 1288. Within this function we call the function, add_url_rule at lines 1315. This function takes the endpoint, option (POST/GET/ect.), and the
+helper function that we make, f. Let's now follow this function. This function simply sets the endpoint and the rule together to associate the two and if we are trying
+to make a new endpoint of the same name it raises an error at line 1283. When making this association we are making a 'Rule' which is an instance of the
+Werkzeug library in routing.py. This is where the mapping of the path and rule take place. 
+
+c.) What license(s) or terms of service apply to this technology?
+Flask's license is licensed under BSD. You are permitted to modify it as long
+as the Flask disclaimer is present and you do not promote the original author's 
+of Flask for the derivatves you make of Flask.
+
