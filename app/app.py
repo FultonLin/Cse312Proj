@@ -275,6 +275,17 @@ def darkmode():
     msg = {"msg": "zero"}
     return jsonify(msg), 200
 
+
+@app.route('/app/pictureUpload', methods=['POST'])
+def upload():
+    data = request.get_data()
+    print(data, flush=True)
+    msg = {"msg": "zero"}
+    return jsonify(msg), 200
+
+    
+
+
 @app.route('/app/home', methods=['POST'])
 def calendarload():
     data = request.get_json(force=True)

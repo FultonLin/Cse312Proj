@@ -24,7 +24,7 @@ function ProfilePage() {
   //Dark mode css
   var dark = sessionStorage.getItem('darkmode')
 
-  const handlePfpChange = (e) => {//set username when inputed
+  const handlePfpChange = (e) => {//set pfp
     setPfp(e.target.value)
   }
 
@@ -117,11 +117,9 @@ function ProfilePage() {
             <nobr>
             <div className="newpfp-container">
                 <h1 className="profilePage-subtitle">Upload new picture: </h1>
-                  <form action="/app/profile" className="pfp-upload" id="image-form" method="post" enctype="multipart/form-data">
-                    <input id="form-file" type="file" name="upload">onChange={handlePfpChange} value={pfp}</input>
-                    <div className="upload-button" onClick={() => pfpUpdate(pfp, setPfp)}>Upload
+                <form action="/app/pictureUpload" className="pfp-upload" id="image-form" method="post" enctype="multipart/form-data">
+                    <input type="file" onChange={handlePfpChange} value={pfp} name="upload"/>
                       <input type="submit" value="Submit"></input>  
-                    </div>
                   </form>
             </div>
             </nobr>
