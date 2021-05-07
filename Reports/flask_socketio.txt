@@ -31,6 +31,29 @@ if else, we add to frame struct.pack("!BQ", 127 | mask_bit, 1). After all this w
 From the research done, it seems flask_socketio serves as a middleman to connect flask to socketio and socketio serves as a middle man to engineio which uses 
 tornado's websockets and the functions within these websockets to handle the connection and recieve and send messages are in websocket.py of this library.
 
+
+---Important---
+After writing the above axplanation, I realized our webapp is actually using polling instead of Tornado's websockets. I will write the polling explanation below. The top one
+will remain in case we upgrade to websockets and also because it took forever to write.
+
+
+Flask socket io doesn't have many files, instead it has three huge files where most of the work is done.
+First, we'll look at __init__.py (https://github.com/miguelgrinberg/Flask-SocketIO/blob/master/flask_socketio/__init__.py).
+So starting with the __init__ function, we will eventually call the init_app function when are given the flask app as the parameter.
+From the init_app function, we eventually (line 245) call the Server function of socketio, socketio.Server(**self.server_options). This function will handle creating the server.
+It is a different library so we must now reference a different link, (https://github.com/miguelgrinberg/python-socketio/blob/master/socketio/server.py).
+We are creating an instantation of the Server class in socketio, so we are in the server.py file, starting at the init function, line 101. 
+Within this function, we see self.eio = self._engineio_server_class()(**engineio_options), this is leads us to the function, def _engineio_server_class, which returns an engenio.Server.
+This return is an instantion of the Server Object in the engenio library which, again. is a different library (https://github.com/miguelgrinberg/python-engineio).
+This is located in server.py of Engineio. In handling a GET request, handle_request is called which is defined on line 311 in server.py
+in the EngineIO library. Our connection is completed through Polling, so we will enter the if statement indicating a polling connection at line
+377. Within this if-block we call the function handle_connect. Here, we pass polling as a parameter rather than websocket so the function knows we intend to have 
+a websocket connection. At line 559 we will enter the 'else-block' since our connection is not websocket. Here you see we create the header for setting a cookie
+line 571. After creating this cookie header we call a function called _ok which completes the http connection. This function is defined at line 615.
+This is where we complete the headers as we have done in class. We create a status of 200 OK with our headers as well as our response which we recieve as a payload which
+we also encode with utf-8 at line 621.
+
+
 c.) What license(s) or terms of service apply to this technology?
 flask_socketio is licensed under MIT. It is open source and the user is allowed to modify it
 free of charge.
