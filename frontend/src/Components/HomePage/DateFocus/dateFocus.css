@@ -40,3 +40,19 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.message-box{
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    border-style: solid;
+    border-color: rgb(0, 0, 0,.5);
+    word-wrap: break-word;
+    background-color: #f7c3c3;
+    border-radius: 20px;
+}
+
+.message-box-text{
+    padding: 5%;
+}

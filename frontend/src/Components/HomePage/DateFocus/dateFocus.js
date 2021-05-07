@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './dateFocus.css'
 import moment from 'moment'
-import Calendar from '../Calendar/calendar'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons'
-
 
 function DateFocus({ title, socket, username, dated, clickedDayChange }) {
-  //Date message to Set
   const [currentMessage, setCurrentMessage] = useState('');
-  console.log("----------------------------------------")
-  console.log(clickedDayChange.format('MM-DD-YYYY'))
 
   const handleMessageChange = (e) => {
     setCurrentMessage(e.target.value)
@@ -39,17 +32,19 @@ function DateFocus({ title, socket, username, dated, clickedDayChange }) {
         <button className="changing-button" onClick={() => sendDelete()}>Clear Date</button>
       </div>
       {/* {renderCheckDateResponse()} */}
-      <div>
-        {dated.map((date) => (date.changingDate == clickedDayChange.format('MM-DD-YYYY')
-          ?
-          <div>
-            <p1>{date.currentMessage}</p1>
-          </div>
-          :
-          <div>
-          </div>
-        ))}
-      </div>
+      <p class="message-box">
+        <div class="message-box-text">
+          {dated.map((date) => (date.changingDate == clickedDayChange.format('MM-DD-YYYY')
+            ?
+            <div>
+              <p1>{date.currentMessage}</p1>
+            </div>
+            :
+            <div>
+            </div>
+          ))}
+        </div>
+      </p>
     </div>
   );
 }
