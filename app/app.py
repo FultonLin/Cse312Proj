@@ -204,39 +204,20 @@ def lobby():
 def profile():
     data = request.get_json(force=True)
     token = data.get('token', None)
-    pfpkey = 'pfp'
-    if pfpkey in data:
-        pfp = data.get('pfp', None)
-        account = ''
-        usersArr = users.find({})
-        for user in usersArr:
-            hashedToken = user.get('token')
-            if(bcrypt.check_password_hash(hashedToken, token)):
-                account = user
-        if(account != ''):
-            username = account.get('username')
-            email = account.get('email')
-            darkmode = account.get('darkmode')
-            joinedCalendars = account.get('Joined Calendars')
-            return jsonify(username, email, darkmode), 200
-        msg = {"msg": "zero"}
-        return jsonify(msg), 200
-
-    else: 
-        account = ''
-        usersArr = users.find({})
-        for user in usersArr:
-            hashedToken = user.get('token')
-            if(bcrypt.check_password_hash(hashedToken, token)):
-                account = user
-        if(account != ''):
-            username = account.get('username')
-            email = account.get('email')
-            darkmode = account.get('darkmode')
-            joinedCalendars = account.get('Joined Calendars')
-            return jsonify(username, email, darkmode), 200
-        msg = {"msg": "zero"}
-        return jsonify(msg), 200
+    account = ''
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            account = user
+    if(account != ''):
+        username = account.get('username')
+        email = account.get('email')
+        darkmode = account.get('darkmode')
+        joinedCalendars = account.get('Joined Calendars')
+        return jsonify(username, email, darkmode), 200
+    msg = {"msg": "zero"}
+    return jsonify(msg), 200
 
 # This changes dark mode settings
 @app.route('/app/darkmode', methods=['POST'])
