@@ -7,7 +7,6 @@ from pymongo.errors import ServerSelectionTimeoutError
 from flask_socketio import SocketIO, send, emit
 import jwt
 import random
-import re
 
 app = Flask(__name__, static_folder='../app/build', static_url_path='/')
 bcrypt = Bcrypt()
@@ -253,7 +252,6 @@ def upload():
     
     rnrn = "\r\n\r\n"
     rnrnb = bytes(rnrn, 'utf-8')
-    #print(data)
     start = 0
     end = 4
     notfound = True
@@ -273,36 +271,12 @@ def upload():
         return jsonify(msg), 200
     split_headers = headers.split("\r\n")
     boundary = split_headers[0]
-    #print(boundary,flush=True)
     boundary_bytes = bytes(boundary, 'utf-8')
     boundary_length = len(boundary_bytes)
-    # notfound = True
-    # rn = "\r\n"
-    # rnb = bytes(rn, 'utf-8')
-    # oldend = end
-    # start = end
-    # end = end + 2
-    # while notfound:
-    #     if data[start:end] == rnb:
-    #         notfound = False
-    #     elif end == bytes_length:
-    #         print ("GOT TO THE END", flush=True)
-    #     else:
-    #         start = start + 1
-    #         end = end + 1
     new_data = data[end:]
-    #print(new_data, flush=True)
     cutoff = boundary_length - 4
     imagebytes = new_data[:len(new_data) - cutoff - 10]
-    #print(imagebytes, flush=True)
-    # header= re.findall(rb"(.*)\r\n\r\n",data)
-    # print(header, flush=True)
-    # imagebytes = re.findall(rb"\r\n\r\n(.*)\r\n--",data)
-    #print(data, flush=True)
-    #print(oldend, flush=True)
-    #print(start, flush=True)
-
-    msg = {"msg": "zero"}
+    msg = {"IMAGE UPLOADED"}
     return jsonify(msg), 200
 
     
