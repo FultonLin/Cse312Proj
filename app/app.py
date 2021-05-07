@@ -240,11 +240,11 @@ def darkmode():
     msg = {"msg": "zero"}
     return jsonify(msg), 200
 
-
+# handles image uploaded through form
 @app.route('/app/pictureUpload', methods=['POST'])
 def upload():
+    #data contains image bytes
     data = request.get_data()
-    print(data)
     msg = {"msg": "zero"}
     return jsonify(msg), 200
 
