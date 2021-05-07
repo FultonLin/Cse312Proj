@@ -47,11 +47,8 @@ def create():
         if(database.users.find({"username": username}).count() > 0 or database.users.find({"email": email}).count() > 0):
             msg = {"msg": "Username/Email taken"}
             return jsonify(msg), 200
-        # If account not taken, make account and generate authentication token
+        
         else:
-            # increment_login_number()
-            # encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(
-            #     login_number)}, secret, algorithm="HS256")
             token = genToken()
             hashedToken = bcrypt.generate_password_hash(token) #Hashed token, can't store plain token in db
             loggedIn.append(token)
@@ -61,15 +58,8 @@ def create():
             msg = {"token": token}
             return jsonify(msg), 200
 
-# resets login_number to 0 if it reaches max value
 
 
-def increment_login_number():
-    global login_number
-    if(login_number == 2147483647):
-        login_number = 0
-    else:
-        login_number = login_number + 1
 
 # This generates a token, no need for JWT
 def genToken():
@@ -95,10 +85,6 @@ def login():
         userPW = user[0].get('hashedPassword')
         darkmodeVal = user[0].get('darkmode')
         if(bcrypt.check_password_hash(userPW, password)):
-            # increment_login_number()
-            # encoded = jwt.encode({'alg': "HS256", 'typ': "JWT", 'sub': username, 'num': str(
-            #     login_number)}, secret, algorithm="HS256")
-
             token = genToken()
             hashedToken = bcrypt.generate_password_hash(token) #Hashed token, can't store plain token in db
             loggedIn.append(token)
@@ -279,7 +265,7 @@ def darkmode():
 @app.route('/app/pictureUpload', methods=['POST'])
 def upload():
     data = request.get_data()
-    print(data, flush=True)
+    print(data)
     msg = {"msg": "zero"}
     return jsonify(msg), 200
 
