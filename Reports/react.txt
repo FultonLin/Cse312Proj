@@ -1,0 +1,26 @@
+a.) What does this technology accomplish?
+React is very useful for our team because of it's easy to use state management. You can make
+a state variable and whenever it changes, it automatically changes in the UI. Our webapp 
+relies heavily on different states so choosing React to handle these different states is very useful.
+
+b.) How does this technology accomplish what it does?
+The heart of our react use starts at index.js in the frontend. We use ReactDOM.render and within this render contains all of our
+elements. Following this function we are taken to index.js of the react-dom library. From here we require the react-dom development module
+at line 37. This allows us to use the virtual DOM. Often, we use useState to render our elements. We will follow this function. useState
+is defined in react.development.js at line 1506. This function returns dispatcher.useState(initialState). This simply gathers the current react Component
+and ensures it's being called correctly. From here, we often use setState to change this state variable. This function is defined at line 358
+in react.development.js. Within this function, we make sure the state we are trying tp update is either an object or function, otherwise
+we throw an error (line 361). If all is good we call this.updater.enriqueSetState where we throw our new potential state as a parameter 
+called 'partialState'. The most important feature of React is to convert our code into javacript that the browser can actually use. We'll 
+now gow into how this process happens. Whenever we make an element in React we are really calling the function createElement in react.development.js line 707.
+This function takes in parameters for its type, config(props) and its children. The parameter 'type' means it will take in a type such as 
+div, p, h, img, ect. After this function we return our values as a react element which we can then recongize as a component in the future. The DOM takes these
+react components to be able to display them on the browser. React dom is large and also its own seperate library. Now, what if we wanted to escape html like was done in the homework?
+React handles this for us. There is a function, escapeHTML within the react-dom development file at line 1139. This function takes in thr html string and replaces it with the code to
+properly escape it. We see there is a switch statement to run through the differing escape values such as &gt;, &lt;, and &amp;. Translating react components into html occurs in the DOM too.
+Within the dom file you see often we create html elements such as document.createElement('div'). The different types of html tags are stored in line 9787 where the code will recongize different headers
+such as div, h1, ect. In the function, IsTagValidWithParent at line 9869 we make sure the html is written in the right order. For example, at like 9911 if out parent tag is 'hmtl' we must have a child tag
+of 'head' or 'body' or 'frameset' or we return error. This is how react checks to make sure out html is written in the correct order before being sent to the browser.
+
+c.) What license(s) or terms of service apply to this technology?
+React is created by Facebook and is licensed under MIT.
