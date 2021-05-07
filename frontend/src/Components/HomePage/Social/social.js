@@ -13,7 +13,7 @@ function Social({ title, count, members, online, currentlyOnline, socket, userna
     for (const member in members) {
       var nameplaceholder = members[member];
       var status = 'offline';
-      for(const user in currentlyOnline){
+      for (const user in currentlyOnline) {
         console.log(currentlyOnline[user].username)
         if (nameplaceholder === currentlyOnline[user].username) {
           status = 'online';
@@ -37,7 +37,7 @@ function Social({ title, count, members, online, currentlyOnline, socket, userna
         </div>
       </div>
       <div className="chat-container">
-              <Chat members={members} currentlyOnline={currentlyOnline} socket={socket} title={title} username={username} chats={chats} privateChats={privateChats}/>
+        <Chat members={members} currentlyOnline={currentlyOnline} socket={socket} title={title} username={username} chats={chats} privateChats={privateChats} />
       </div>
     </div>
   );

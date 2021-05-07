@@ -42,3 +42,24 @@
 .chat-container{
     width: 100%;
 }
+
+
+.swap-button{
+    font-size: .90rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor:default;
+    padding: .5%;
+    opacity: 1;
+    border-radius: 20px;
+}
+
+.swap-button:hover{
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.Swap-Button-Container{
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: .5%;
+}
