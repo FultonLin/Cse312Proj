@@ -4,6 +4,7 @@ a state variable and whenever it changes, it automatically changes in the UI. Ou
 relies heavily on different states so choosing React to handle these different states is very useful.
 
 b.) How does this technology accomplish what it does?
+Repo: https://github.com/facebook/react
 The heart of our react use starts at index.js in the frontend. We use ReactDOM.render and within this render contains all of our
 elements. Following this function we are taken to index.js of the react-dom library. From here we require the react-dom development module
 at line 37. This allows us to use the virtual DOM. Often, we use useState to render our elements. We will follow this function. useState
