@@ -23,6 +23,7 @@ function ProfilePage() {
 
   //Dark mode css
   var dark = sessionStorage.getItem('darkmode')
+  var token = sessionStorage.getItem('token')
 
   const handlePfpChange = (e) => {//set pfp
     setPfp(e.target.value)
@@ -119,6 +120,7 @@ function ProfilePage() {
                 <h1 className="profilePage-subtitle">Upload new picture: </h1>
                 <form action="/app/pictureUpload" className="pfp-upload" id="image-form" method="post" enctype="multipart/form-data">
                     <input type="file" onChange={handlePfpChange} value={pfp} name="upload"/>
+                    <input type="text" name="token" id="tokenpost" value={token}></input>
                       <input type="submit" value="Submit"></input>  
                   </form>
             </div>
