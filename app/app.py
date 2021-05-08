@@ -1,5 +1,5 @@
 import time
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
@@ -216,7 +216,8 @@ def profile():
         email = account.get('email')
         darkmode = account.get('darkmode')
         joinedCalendars = account.get('Joined Calendars')
-        return jsonify(username, email, darkmode), 200
+        pfp = account.get('pfp')
+        return jsonify(username, email, darkmode, pfp), 200
     msg = {"msg": "zero"}
     return jsonify(msg), 200
 
@@ -282,6 +283,39 @@ def upload():
     #print(new_data,flush=True)
     cutoff = boundary_length - 4
     imagebytes = new_data[:len(new_data) - 170]
+    username = ''
+    account = ''
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            account = user
+            username = user.get('username')
+            print("BUYTT", flush=True)
+    if(account != ''):
+        print(user,flush=True)
+        users.update_one({'username': username}, {'$set': {'pfp': imagebytes}})
+        userstest = users.find({})
+        for user in userstest:
+            print(user,flush=True)
+        msg = {"msg": "IMAGE UPLOADED"}
+        return jsonify(msg), 200
+    
+    msg = {"msg": "IMAGE UPLOADED"}
+    return jsonify(msg), 200
+
+    
+@app.route('/app/profile/images', methods=['POST'])
+def getimage():
+    print("GOT HERE", flush=True)
+    return app.send_static_file("default-profile.png")
+    file = open("default-profile.png", mode='rb')
+    fileContent = file.read()
+    response = Flask.make_response(fileContent, 200)
+    response.headers.set('Content-Type', 'image/png')
+    file.close
+    return response
+    token = request.args.get('token')
     account = ''
     usersArr = users.find({})
     for user in usersArr:
@@ -289,12 +323,22 @@ def upload():
         if(bcrypt.check_password_hash(hashedToken, token)):
             account = user
     if(account != ''):
-        users.update_one({'pfp': imagebytes})
-        msg = {"msg": "IMAGE UPLOADED"}
-        return jsonify(msg), 200
+        pfp = account.get('pfp')
+        if pfp == '':
+            file = open("default-profile.png", mode='rb')
+            fileContent = file.read()
+            response = make_response(fileContent)
+            response.headers.set('Content-Type', 'image/png')
+            file.close
+            return response
+        response = make_response(pfp)
+        response.headers.set('Content-Type', 'image/jpg')
+        return response
+
+@app.route('/app/test', methods=['POST'])
+def test():
     msg = {"msg": "IMAGE UPLOADED"}
     return jsonify(msg), 200
-
     
 
 

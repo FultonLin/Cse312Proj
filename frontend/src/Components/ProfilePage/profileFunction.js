@@ -1,6 +1,6 @@
 
 
-export default function ProfilePull(setUsername, setEmail, setDarkMode){
+export default function ProfilePull(setUsername, setEmail, setDarkMode, setPfp){
     console.log("here")
     var token = sessionStorage.getItem("token")
       let data = {
@@ -20,5 +20,6 @@ export default function ProfilePull(setUsername, setEmail, setDarkMode){
             setUsername(res[0])
             setEmail(res[1])
             setDarkMode(res[2])
+            setPfp(res[3])
         })
 }

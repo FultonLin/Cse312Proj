@@ -31,7 +31,7 @@ function ProfilePage() {
 
   useEffect(() => {
     // Calls this request only once per render
-    ProfilePull(setUsername, setEmail, setDarkMode)
+    ProfilePull(setUsername, setEmail, setDarkMode, setPfp)
   }, []);
 
   // If invalid credentials, alert user
@@ -67,12 +67,28 @@ function ProfilePage() {
       DarkModeFunction(darkMode)
   }
 
- 
+  function componentDidMount(){
+    var pick = ""
+    fetch('/app/profile/images', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => {
+      return response.text();
+    })
+    .then((data) => {
+      return data;
+    })
+  }
 
   function profilePicture() {
 
     const renderPFP = () => {
-      return (<img src={defaultProfile} className="profile-picture" alt="Profile avatar" />)
+      
+      return (<img src={componentDidMount()} className="profile-picture" alt="Profile avatar" />)
     }
 
     return (
@@ -101,7 +117,7 @@ function ProfilePage() {
             <h>Profile</h>
             <div className="profile-subcontainer">
                 <h1 className="profilePage-subtitle">Your username:</h1>
-                <h>{username}</h>
+                <h>{pfp}</h>
             </div>
             <div className="profile-subcontainer">
                 <h1 className="profilePage-subtitle">Your email:</h1>
@@ -119,7 +135,7 @@ function ProfilePage() {
             <div className="newpfp-container">
                 <h1 className="profilePage-subtitle">Upload new picture: </h1>
                 <form action="/app/pictureUpload" className="pfp-upload" id="image-form" method="post" enctype="multipart/form-data">
-                    <input type="file" onChange={handlePfpChange} value={pfp} name="upload"/>
+                    <input type="file" name="upload" accept="jpg"/>
                     <input type="text" name="token" id="tokenpost" value={token}></input>
                       <input type="submit" value="Submit"></input>  
                   </form>
