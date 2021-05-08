@@ -246,6 +246,7 @@ def darkmode():
 def upload():
     #data contains image bytes
     data = request.get_data()
+    #print(data,flush=True)
     bytes_length = len(data)
     
     rnrn = "\r\n\r\n"
@@ -272,9 +273,24 @@ def upload():
     boundary_bytes = bytes(boundary, 'utf-8')
     boundary_length = len(boundary_bytes)
     new_data = data[end:]
+    endpart = str(new_data[len(new_data) - 100:])
+    index = endpart.find("token")
+    index = index + 14
+    token = endpart[index:index + 32]
+    #print(new_data,flush=True)
     cutoff = boundary_length - 4
-    imagebytes = new_data[:len(new_data) - cutoff - 10]
-    msg = {"IMAGE UPLOADED"}
+    imagebytes = new_data[:len(new_data) - 170]
+    account = ''
+    usersArr = users.find({})
+    for user in usersArr:
+        hashedToken = user.get('token')
+        if(bcrypt.check_password_hash(hashedToken, token)):
+            account = user
+    if(account != ''):
+        users.update_one({'pfp': imagebytes})
+        msg = {"msg": "IMAGE UPLOADED"}
+        return jsonify(msg), 200
+    msg = {"msg": "IMAGE UPLOADED"}
     return jsonify(msg), 200
 
     
