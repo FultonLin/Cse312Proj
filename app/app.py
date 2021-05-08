@@ -280,14 +280,16 @@ def upload():
     #print(new_data,flush=True)
     cutoff = boundary_length - 4
     imagebytes = new_data[:len(new_data) - 170]
+    username =''
     account = ''
     usersArr = users.find({})
     for user in usersArr:
         hashedToken = user.get('token')
         if(bcrypt.check_password_hash(hashedToken, token)):
             account = user
+            username = user.get('username')
     if(account != ''):
-        users.update_one({'pfp': imagebytes})
+        users.update_one({'username': username}, {'$set': {'pfp': imagebytes}})
         msg = {"msg": "IMAGE UPLOADED"}
         return jsonify(msg), 200
     msg = {"msg": "IMAGE UPLOADED"}
